@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apparelory ERP - Noureddine Boukestane</title>
+    <title>Apparelory ERP — Documentation & Système Logistique | Noureddine Boukestane</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -11,386 +11,678 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-text {
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        :root {
+            --bg-main: #09090b;
+            --bg-card: #121215;
+            --border-subtle: rgba(255, 255, 255, 0.08);
         }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-main);
+            color: #f4f4f5;
+            overflow-x: hidden;
+        }
+        .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
+        
+        .bg-grid-pattern {
+            background-size: 32px 32px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+        
+        .hero-spotlight {
+            background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15) 0%, rgba(9, 9, 11, 0) 65%);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 35s linear infinite;
+        }
+        .animate-marquee:hover { animation-play-state: paused; }
+
+        .bento-card {
+            background: linear-gradient(180deg, rgba(24, 24, 28, 0.8) 0%, rgba(14, 14, 17, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bento-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #18181b; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 antialiased selection:bg-blue-500 selection:text-white">
+<body class="bg-grid-pattern antialiased selection:bg-blue-600 selection:text-white relative">
 
-    <!-- ================= NAVBAR ================= -->
-    <nav class="fixed w-full z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- LOGO OFFICIEL FIXE -->
-                <div class="flex items-center gap-3">
-                    <img src="logo.png" alt="Logo" class="app-logo-img h-10 w-10 object-contain rounded-lg border border-slate-700 bg-slate-800" onerror="this.style.display='none'; document.getElementById('nav-fallback-icon').style.display='flex';">
-                    <div id="nav-fallback-icon" class="hidden bg-blue-600 p-2 rounded-lg items-center justify-center">
-                        <i class="fa-solid fa-boxes-stacked text-white text-xl"></i>
-                    </div>
-                    <span class="font-bold text-xl tracking-tight text-white">Apparelory <span class="text-blue-500">ERP</span></span>
-                </div>
+    <div class="fixed inset-0 hero-spotlight pointer-events-none z-0"></div>
 
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-6">
-                        <a href="#accueil" class="hover:text-blue-400 transition px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
-                        <a href="#live-demo" class="text-blue-400 font-semibold px-3 py-2 rounded-md text-sm"><i class="fa-solid fa-play mr-1"></i> Démo PC</a>
-                        <a href="#mobile-app" class="text-purple-400 font-semibold px-3 py-2 rounded-md text-sm flex items-center gap-1.5">
-                            <i class="fa-solid fa-mobile-screen-button"></i> App Mobile <span class="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30">Soon</span>
-                        </a>
-                        <a href="#fonctionnalites" class="hover:text-blue-400 transition px-3 py-2 rounded-md text-sm font-medium">Modules</a>
-                        <a href="#auteur" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-lg shadow-blue-500/30">Créateur</a>
-                    </div>
+    <!-- ================= NAVIGATION PILULE ================= -->
+    <header class="fixed top-5 inset-x-0 z-50 flex justify-center px-4">
+        <nav class="bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2.5 shadow-2xl flex items-center justify-between gap-6 max-w-5xl w-full">
+            <a href="#accueil" class="flex items-center gap-3 group">
+                <img src="logo.png" alt="Logo" class="app-logo-img h-8 w-8 object-contain rounded-lg bg-zinc-800 border border-white/10" onerror="this.style.display='none'; document.getElementById('nav-fallback-icon').style.display='flex';">
+                <div id="nav-fallback-icon" class="hidden w-8 h-8 bg-white text-black rounded-lg items-center justify-center font-extrabold text-sm">
+                    A
                 </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-sm tracking-tight text-white leading-none">Apparelory<span class="text-blue-500">.erp</span></span>
+                    <span class="font-mono-tech text-[10px] text-zinc-500 mt-0.5">DOCS & LIVE</span>
+                </div>
+            </a>
+
+            <div class="hidden lg:flex items-center gap-5 text-xs font-semibold text-zinc-400">
+                <a href="#live-demo" class="hover:text-white transition flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Simulator</a>
+                <a href="#workflow" class="hover:text-white transition">Fonctionnement</a>
+                <a href="#architecture-db" class="hover:text-white transition">Base de Données</a>
+                <a href="#ingenierie" class="hover:text-white transition">Algorithme CUMP</a>
+                <a href="#mobile-app" class="hover:text-white transition">App Mobile</a>
+                <a href="#auteur" class="hover:text-white transition">Architecte</a>
             </div>
-        </div>
-    </nav>
+
+            <a href="#live-demo" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded-full text-xs font-bold transition shadow-lg shadow-blue-600/30">
+                Tester l'App →
+            </a>
+        </nav>
+    </header>
 
     <!-- ================= HERO SECTION ================= -->
-    <section id="accueil" class="pt-28 pb-10 px-4 max-w-7xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-6">
-            <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            Simulateur ERP 100% Interactif ci-dessous !
-        </div>
-        
-        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
-            Testez <span class="gradient-text">Apparelory ERP</span> <br class="hidden sm:block">directement dans votre navigateur.
-        </h1>
-        
-        <p class="max-w-2xl mx-auto text-base md:text-lg text-slate-400 mb-6">
-            Conçu par <strong>Noureddine Boukestane</strong>. Gérez vos fournisseurs, ajoutez des articles, effectuez des entrées/sorties avec calcul du CUMP, et filtrez vos graphiques financiers par année, mois et produit !
-        </p>
-    </section>
-
-    <!-- ================= LIVE INTERACTIVE APP SIMULATOR (PC) ================= -->
-    <section id="live-demo" class="py-2 px-2 sm:px-4 max-w-7xl mx-auto">
-        <div class="rounded-xl bg-slate-800 p-2 sm:p-3 border border-slate-700 shadow-2xl">
+    <section id="accueil" class="relative z-10 pt-36 pb-16 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
             
-            <!-- Barre de titre Windows -->
-            <div class="flex items-center justify-between bg-slate-900 px-4 py-2.5 rounded-t-lg border-b border-slate-800">
-                <div class="flex items-center gap-2.5">
-                    <img src="logo.png" alt="Logo App" class="app-logo-img w-5 h-5 object-contain rounded" onerror="this.style.display='none'; document.getElementById('win-fallback-icon').style.display='inline-block';">
-                    <i id="win-fallback-icon" class="fa-solid fa-box-open text-blue-500 hidden text-sm"></i>
-                    <span id="win-title" class="text-xs sm:text-sm text-slate-200 font-semibold">Apparelory Store ERP - Connecté en tant que: Admin | Online (Supabase)</span>
+            <div class="lg:col-span-8 space-y-6">
+                <div class="inline-flex items-center gap-3 px-3 py-1 rounded-md bg-zinc-900 border border-white/10 font-mono-tech text-xs text-zinc-300">
+                    <span class="text-blue-400 font-bold">[PROJET_ERP_OFFICIEL]</span>
+                    <span class="text-zinc-600">|</span>
+                    <span>Supply Chain & WMS System</span>
+                    <span class="text-zinc-600">|</span>
+                    <span class="text-emerald-400">Marrakech</span>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-3 h-3 rounded-full bg-amber-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-[64px] font-extrabold tracking-tight text-white leading-[1.06]">
+                    Maîtrisez chaque flux logistique,<br>
+                    <span class="text-zinc-500">de l'approvisionnement à la vente.</span>
+                </h1>
+            </div>
+
+            <div class="lg:col-span-4 space-y-6 border-l border-white/10 pl-0 lg:pl-8">
+                <p class="text-zinc-400 text-sm sm:text-base leading-relaxed">
+                    Développé et architecturé par <strong class="text-white font-semibold">Noureddine Boukestane</strong>. Une documentation technique complète et un simulateur interactif pour démontrer la puissance d'un ERP moderne.
+                </p>
+                <div class="flex flex-wrap items-center gap-3 pt-2">
+                    <a href="#live-demo" class="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition shadow-lg shadow-blue-600/20 flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> Lancer la Démo Live
+                    </a>
+                    <a href="#workflow" class="px-5 py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-xs font-bold uppercase tracking-wider rounded-lg border border-white/10 transition">
+                        Guide Technique
+                    </a>
                 </div>
             </div>
 
-            <!-- Corps de l'application -->
-            <div class="bg-[#f8f9fa] text-slate-800 rounded-b-lg p-3 sm:p-5 min-h-[640px] flex flex-col justify-between shadow-inner">
-                <div>
-                    <!-- Onglets -->
-                    <div class="flex flex-wrap border-b border-slate-300 mb-4 gap-1">
-                        <button onclick="switchTab('stock')" id="tab-btn-stock" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-blue-600 text-white flex items-center gap-2 transition">
-                            📦 <span id="lbl-tab-stock">Gestion du Magasin</span>
-                        </button>
-                        <button onclick="switchTab('dash')" id="tab-btn-dash" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2 transition">
-                            📊 <span id="lbl-tab-dash">Dashboard Analytique</span>
-                        </button>
-                        <button onclick="switchTab('settings')" id="tab-btn-settings" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2 transition">
-                            ⚙️ <span id="lbl-tab-settings">Paramètres</span>
-                        </button>
+        </div>
+    </section>
+
+    <!-- ================= MARQUEE DÉFILANT ================= -->
+    <div class="border-y border-white/5 bg-zinc-950/60 py-3 overflow-hidden relative z-10 mb-16">
+        <div class="animate-marquee font-mono-tech text-xs text-zinc-500 flex items-center gap-10">
+            <span><strong class="text-zinc-300">MODULE 1:</strong> GESTION DES ARTICLES & SKU</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 2:</strong> SUIVI DES FOURNISSEURS</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 3:</strong> ENTRÉES DE STOCK & CALCUL CUMP</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 4:</strong> SORTIES & FACTURATION PDF</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 5:</strong> DASHBOARD & KPIs ANALYTIQUES</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 6:</strong> PARAMÈTRES MULTILANGUE & MULTI-DEVISES</span><span>•</span>
+            <!-- Répétition -->
+            <span><strong class="text-zinc-300">MODULE 1:</strong> GESTION DES ARTICLES & SKU</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 2:</strong> SUIVI DES FOURNISSEURS</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 3:</strong> ENTRÉES DE STOCK & CALCUL CUMP</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 4:</strong> SORTIES & FACTURATION PDF</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 5:</strong> DASHBOARD & KPIs ANALYTIQUES</span><span>•</span>
+            <span><strong class="text-zinc-300">MODULE 6:</strong> PARAMÈTRES MULTILANGUE & MULTI-DEVISES</span><span>•</span>
+        </div>
+    </div>
+
+    <!-- ================= SECTION WORKSTATION : LIVE DEMO ================= -->
+    <section id="live-demo" class="relative z-10 py-4 px-2 sm:px-6 max-w-7xl mx-auto mb-20">
+        
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4 px-2">
+            <div>
+                <span class="px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/30 font-mono-tech text-[11px] text-blue-400 font-bold">
+                    SIMULATEUR INTERACTIF
+                </span>
+                <h3 class="text-2xl font-extrabold text-white mt-1">Testez l'application en direct</h3>
+            </div>
+            <div class="font-mono-tech text-xs text-zinc-400 flex items-center gap-4 bg-zinc-900 px-4 py-2 rounded-lg border border-white/10">
+                <span>STATUT: <strong class="text-emerald-400">Opérationnel</strong></span>
+                <span>MODE: <strong class="text-blue-400">Admin / Vendeur</strong></span>
+            </div>
+        </div>
+
+        <div class="rounded-2xl bg-gradient-to-b from-zinc-700/40 to-zinc-900/80 p-[1px] shadow-[0_30px_100px_-15px_rgba(37,99,235,0.2)]">
+            <div class="rounded-2xl bg-zinc-950 p-2 sm:p-3">
+                
+                <div class="flex items-center justify-between bg-[#18181b] px-4 py-2.5 rounded-t-xl border-b border-white/10">
+                    <div class="flex items-center gap-2.5">
+                        <img src="logo.png" alt="Logo App" class="app-logo-img w-5 h-5 object-contain rounded" onerror="this.style.display='none'; document.getElementById('win-fallback-icon').style.display='inline-block';">
+                        <i id="win-fallback-icon" class="fa-solid fa-box-open text-blue-500 hidden text-sm"></i>
+                        <span id="win-title" class="font-mono-tech text-xs text-zinc-200 font-medium">Apparelory Store ERP - Connecté en tant que: Admin | Online</span>
                     </div>
-
-                    <!-- ==================== ONGLET 1 : MAGASIN ==================== -->
-                    <div id="view-stock" class="space-y-4">
-                        <div class="flex flex-wrap items-center justify-between gap-3">
-                            <div class="flex items-center gap-2">
-                                <button onclick="openAddArticleModal()" class="bg-[#3fb618] hover:bg-[#349813] text-white px-4 py-2 rounded font-semibold text-sm shadow flex items-center gap-2 transition">
-                                    <i class="fa-solid fa-plus"></i> <span id="btn-add-art">Créer un article</span>
-                                </button>
-                                <button onclick="openFournisseursModal()" class="bg-[#9954bb] hover:bg-[#8246a0] text-white px-4 py-2 rounded font-semibold text-sm shadow flex items-center gap-2 transition">
-                                    <i class="fa-solid fa-users"></i> <span id="btn-fourn">Fournisseurs</span>
-                                </button>
-                            </div>
-                            <div class="flex items-center gap-2 w-full sm:w-auto">
-                                <label class="font-bold text-sm text-slate-700 whitespace-nowrap" id="lbl-search">🔍 Rechercher :</label>
-                                <input type="text" id="search-input" onkeyup="renderTable()" placeholder="SKU, Désignation, Catégorie..." class="border border-slate-300 rounded px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:border-blue-600 bg-white">
-                            </div>
-                        </div>
-
-                        <div class="border border-slate-300 rounded overflow-hidden bg-white shadow-sm">
-                            <div class="overflow-x-auto max-h-[380px]">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-[#2780e3] text-white text-xs sm:text-sm font-semibold text-center select-none">
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-photo">Photo</th>
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-sku">SKU</th>
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-des">Désignation</th>
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-cat">Catégorie</th>
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-fourn">Fournisseur</th>
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-qte">Quantité</th>
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-prix">Prix Moyen (CUMP)</th>
-                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-seuil">Seuil</th>
-                                            <th class="py-2.5 px-3" id="th-date">Date d'ajout</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table-body" class="divide-y divide-slate-200 text-xs sm:text-sm text-center"></tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-zinc-700"></div>
+                        <div class="w-3 h-3 rounded-full bg-zinc-700"></div>
+                        <div class="w-3 h-3 rounded-full bg-zinc-700"></div>
                     </div>
+                </div>
 
-                    <!-- ==================== ONGLET 2 : DASHBOARD ANALYTIQUE ==================== -->
-                    <div id="view-dash" class="hidden space-y-4">
-                        <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm flex flex-wrap items-center gap-4 text-sm">
-                            <div class="flex items-center gap-2">
-                                <label class="font-bold text-slate-700">📅 Année :</label>
-                                <select id="dash-annee" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
-                                    <option value="2026" selected>2026</option>
-                                    <option value="2025">2025</option>
-                                </select>
-                            </div>
-
-                            <div class="flex items-center gap-2">
-                                <label class="font-bold text-slate-700">📆 Mois :</label>
-                                <select id="dash-mois" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
-                                    <option value="Tous les mois" selected>Tous les mois (Annuel)</option>
-                                    <option value="01">01 - Janvier</option>
-                                    <option value="02">02 - Février</option>
-                                    <option value="03">03 - Mars</option>
-                                    <option value="04">04 - Avril</option>
-                                    <option value="05">05 - Mai</option>
-                                    <option value="06">06 - Juin</option>
-                                    <option value="07">07 - Juillet</option>
-                                    <option value="08">08 - Août</option>
-                                    <option value="09">09 - Septembre</option>
-                                    <option value="10">10 - Octobre</option>
-                                    <option value="11">11 - Novembre</option>
-                                    <option value="12">12 - Décembre</option>
-                                </select>
-                            </div>
-
-                            <div class="flex items-center gap-2 flex-1 min-w-[220px]">
-                                <label class="font-bold text-slate-700 whitespace-nowrap">📦 Produit :</label>
-                                <select id="dash-produit" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 w-full focus:outline-none focus:border-blue-600">
-                                    <option value="Tous les produits">Tous les produits</option>
-                                </select>
-                            </div>
-
-                            <button onclick="renderCharts()" class="bg-slate-600 hover:bg-slate-700 text-white font-bold px-4 py-1.5 rounded shadow transition flex items-center gap-1.5">
-                                🔄 Actualiser
+                <div class="bg-[#f8f9fa] text-slate-800 rounded-b-xl p-3 sm:p-5 min-h-[640px] flex flex-col justify-between shadow-inner">
+                    <div>
+                        <!-- Onglets -->
+                        <div class="flex flex-wrap border-b border-slate-300 mb-4 gap-1">
+                            <button onclick="switchTab('stock')" id="tab-btn-stock" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-blue-600 text-white flex items-center gap-2 transition">
+                                📦 <span id="lbl-tab-stock">Gestion du Magasin</span>
+                            </button>
+                            <button onclick="switchTab('dash')" id="tab-btn-dash" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2 transition">
+                                📊 <span id="lbl-tab-dash">Dashboard Analytique</span>
+                            </button>
+                            <button onclick="switchTab('settings')" id="tab-btn-settings" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2 transition">
+                                ⚙️ <span id="lbl-tab-settings">Paramètres</span>
                             </button>
                         </div>
 
-                        <!-- KPIs -->
-                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-[#2780e3] text-white p-4 rounded-lg shadow text-center">
-                                <div class="text-xs sm:text-sm font-semibold opacity-90">📦 Références</div>
-                                <div id="kpi-refs" class="text-2xl font-extrabold mt-1">0</div>
+                        <!-- ONGLET 1 : MAGASIN -->
+                        <div id="view-stock" class="space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center gap-2">
+                                    <button onclick="openAddArticleModal()" class="bg-[#3fb618] hover:bg-[#349813] text-white px-4 py-2 rounded font-semibold text-sm shadow flex items-center gap-2 transition">
+                                        <i class="fa-solid fa-plus"></i> <span id="btn-add-art">Créer un article</span>
+                                    </button>
+                                    <button onclick="openFournisseursModal()" class="bg-[#9954bb] hover:bg-[#8246a0] text-white px-4 py-2 rounded font-semibold text-sm shadow flex items-center gap-2 transition">
+                                        <i class="fa-solid fa-users"></i> <span id="btn-fourn">Fournisseurs</span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2 w-full sm:w-auto">
+                                    <label class="font-bold text-sm text-slate-700 whitespace-nowrap" id="lbl-search">🔍 Rechercher :</label>
+                                    <input type="text" id="search-input" onkeyup="renderTable()" placeholder="SKU, Désignation, Catégorie..." class="border border-slate-300 rounded px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:border-blue-600 bg-white">
+                                </div>
                             </div>
-                            <div class="bg-[#9954bb] text-white p-4 rounded-lg shadow text-center">
-                                <div class="text-xs sm:text-sm font-semibold opacity-90">🔢 Total Pièces</div>
-                                <div id="kpi-pieces" class="text-2xl font-extrabold mt-1">0</div>
-                            </div>
-                            <div class="bg-[#ff0039] text-white p-4 rounded-lg shadow text-center">
-                                <div class="text-xs sm:text-sm font-semibold opacity-90">⚠️ En Alerte</div>
-                                <div id="kpi-alerte" class="text-2xl font-extrabold mt-1">0</div>
-                            </div>
-                            <div class="bg-[#3fb618] text-white p-4 rounded-lg shadow text-center">
-                                <div class="text-xs sm:text-sm font-semibold opacity-90">💰 Valeur Stock</div>
-                                <div id="kpi-valeur" class="text-2xl font-extrabold mt-1">0.00 DH</div>
+
+                            <div class="border border-slate-300 rounded overflow-hidden bg-white shadow-sm">
+                                <div class="overflow-x-auto max-h-[380px]">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr class="bg-[#2780e3] text-white text-xs sm:text-sm font-semibold text-center select-none">
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-photo">Photo</th>
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-sku">SKU</th>
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-des">Désignation</th>
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-cat">Catégorie</th>
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-fourn">Fournisseur</th>
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-qte">Quantité</th>
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-prix">Prix Moyen (CUMP)</th>
+                                                <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-seuil">Seuil</th>
+                                                <th class="py-2.5 px-3" id="th-date">Date d'ajout</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body" class="divide-y divide-slate-200 text-xs sm:text-sm text-center"></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Graphiques Dynamiques -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                        <!-- ONGLET 2 : DASHBOARD -->
+                        <div id="view-dash" class="hidden space-y-4">
+                            <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm flex flex-wrap items-center gap-4 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-slate-700">📅 Année :</label>
+                                    <select id="dash-annee" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
+                                        <option value="2026" selected>2026</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-slate-700">📆 Mois :</label>
+                                    <select id="dash-mois" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
+                                        <option value="Tous les mois" selected>Tous les mois (Annuel)</option>
+                                        <option value="01">01 - Janvier</option>
+                                        <option value="02">02 - Février</option>
+                                        <option value="03">03 - Mars</option>
+                                        <option value="04">04 - Avril</option>
+                                        <option value="05">05 - Mai</option>
+                                        <option value="06">06 - Juin</option>
+                                        <option value="07">07 - Juillet</option>
+                                        <option value="08">08 - Août</option>
+                                        <option value="09">09 - Septembre</option>
+                                        <option value="10">10 - Octobre</option>
+                                        <option value="11">11 - Novembre</option>
+                                        <option value="12">12 - Décembre</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex items-center gap-2 flex-1 min-w-[220px]">
+                                    <label class="font-bold text-slate-700 whitespace-nowrap">📦 Produit :</label>
+                                    <select id="dash-produit" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 w-full focus:outline-none focus:border-blue-600">
+                                        <option value="Tous les produits">Tous les produits</option>
+                                    </select>
+                                </div>
+
+                                <button onclick="renderCharts()" class="bg-slate-600 hover:bg-slate-700 text-white font-bold px-4 py-1.5 rounded shadow transition flex items-center gap-1.5">
+                                    🔄 Actualiser
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="bg-[#2780e3] text-white p-4 rounded-lg shadow text-center">
+                                    <div class="text-xs sm:text-sm font-semibold opacity-90">📦 Références</div>
+                                    <div id="kpi-refs" class="text-2xl font-extrabold mt-1">0</div>
+                                </div>
+                                <div class="bg-[#9954bb] text-white p-4 rounded-lg shadow text-center">
+                                    <div class="text-xs sm:text-sm font-semibold opacity-90">🔢 Total Pièces</div>
+                                    <div id="kpi-pieces" class="text-2xl font-extrabold mt-1">0</div>
+                                </div>
+                                <div class="bg-[#ff0039] text-white p-4 rounded-lg shadow text-center">
+                                    <div class="text-xs sm:text-sm font-semibold opacity-90">⚠️ En Alerte</div>
+                                    <div id="kpi-alerte" class="text-2xl font-extrabold mt-1">0</div>
+                                </div>
+                                <div class="bg-[#3fb618] text-white p-4 rounded-lg shadow text-center">
+                                    <div class="text-xs sm:text-sm font-semibold opacity-90">💰 Valeur Stock</div>
+                                    <div id="kpi-valeur" class="text-2xl font-extrabold mt-1">0.00 DH</div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                <div>
+                                    <h4 id="chart1-title" class="text-center font-bold text-slate-800 mb-2 text-sm">Mouvements (Pièces)</h4>
+                                    <canvas id="chartMouvements" height="175"></canvas>
+                                </div>
+                                <div>
+                                    <h4 id="chart2-title" class="text-center font-bold text-slate-800 mb-2 text-sm">Finances Globales</h4>
+                                    <canvas id="chartFinances" height="175"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ONGLET 3 : PARAMÈTRES -->
+                        <div id="view-settings" class="hidden p-4 max-w-md space-y-5 bg-white rounded-lg border border-slate-200 shadow-sm">
                             <div>
-                                <h4 id="chart1-title" class="text-center font-bold text-slate-800 mb-2 text-sm">Mouvements (Pièces)</h4>
-                                <canvas id="chartMouvements" height="175"></canvas>
+                                <label class="block font-bold text-slate-700 mb-2">Langue de l'application :</label>
+                                <select id="select-lang" class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-800">
+                                    <option value="fr">Français (fr)</option>
+                                    <option value="en">English (en)</option>
+                                    <option value="ar">العربية (ar)</option>
+                                </select>
                             </div>
                             <div>
-                                <h4 id="chart2-title" class="text-center font-bold text-slate-800 mb-2 text-sm">Finances Globales</h4>
-                                <canvas id="chartFinances" height="175"></canvas>
+                                <label class="block font-bold text-slate-700 mb-2">Devise par défaut :</label>
+                                <select id="select-curr" class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-800">
+                                    <option value="DH">Dirham Marocain (DH)</option>
+                                    <option value="€">Euro (€)</option>
+                                    <option value="$">Dollar ($)</option>
+                                </select>
                             </div>
+                            <button onclick="applySettings()" class="bg-[#3fb618] hover:bg-[#349813] text-white font-bold px-6 py-2.5 rounded shadow transition w-full">
+                                Sauvegarder et Appliquer
+                            </button>
                         </div>
                     </div>
 
-                    <!-- ==================== ONGLET 3 : PARAMÈTRES ==================== -->
-                    <div id="view-settings" class="hidden p-4 max-w-md space-y-5 bg-white rounded-lg border border-slate-200 shadow-sm">
-                        <div>
-                            <label class="block font-bold text-slate-700 mb-2">Langue de l'application :</label>
-                            <select id="select-lang" class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-800">
-                                <option value="fr">Français (fr)</option>
-                                <option value="en">English (en)</option>
-                                <option value="ar">العربية (ar)</option>
-                            </select>
+                    <!-- Barre d'actions en bas -->
+                    <div id="bottom-actions" class="pt-4 mt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="openMouvModal('plus')" class="bg-[#2780e3] hover:bg-blue-700 text-white px-4 py-2 rounded font-bold text-sm shadow flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-plus"></i> <span id="btn-in">Entrée</span>
+                            </button>
+                            <button onclick="openMouvModal('moins')" class="bg-[#ff7518] hover:bg-orange-600 text-white px-4 py-2 rounded font-bold text-sm shadow flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-minus"></i> <span id="btn-out">Sortie (Vente)</span>
+                            </button>
+                            <button onclick="exportCSV()" class="border-2 border-[#3fb618] text-[#3fb618] hover:bg-[#3fb618] hover:text-white px-4 py-1.5 rounded font-bold text-sm flex items-center gap-1.5 transition ml-0 sm:ml-4">
+                                📊 <span id="btn-export">Exporter Suivi Commandes</span>
+                            </button>
                         </div>
-                        <div>
-                            <label class="block font-bold text-slate-700 mb-2">Devise par défaut :</label>
-                            <select id="select-curr" class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-800">
-                                <option value="DH">Dirham Marocain (DH)</option>
-                                <option value="€">Euro (€)</option>
-                                <option value="$">Dollar ($)</option>
-                            </select>
-                        </div>
-                        <button onclick="applySettings()" class="bg-[#3fb618] hover:bg-[#349813] text-white font-bold px-6 py-2.5 rounded shadow transition w-full">
-                            Sauvegarder et Appliquer
-                        </button>
+                        <span id="selected-indicator" class="font-mono-tech text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1 rounded border border-blue-200">
+                            Article sélectionné : Aucun
+                        </span>
                     </div>
-                </div>
-
-                <!-- Barre d'actions en bas -->
-                <div id="bottom-actions" class="pt-4 mt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="openMouvModal('plus')" class="bg-[#2780e3] hover:bg-blue-700 text-white px-4 py-2 rounded font-bold text-sm shadow flex items-center gap-1.5 transition">
-                            <i class="fa-solid fa-plus"></i> <span id="btn-in">Entrée</span>
-                        </button>
-                        <button onclick="openMouvModal('moins')" class="bg-[#ff7518] hover:bg-orange-600 text-white px-4 py-2 rounded font-bold text-sm shadow flex items-center gap-1.5 transition">
-                            <i class="fa-solid fa-minus"></i> <span id="btn-out">Sortie (Vente)</span>
-                        </button>
-                        <button onclick="exportCSV()" class="border-2 border-[#3fb618] text-[#3fb618] hover:bg-[#3fb618] hover:text-white px-4 py-1.5 rounded font-bold text-sm flex items-center gap-1.5 transition ml-0 sm:ml-4">
-                            📊 <span id="btn-export">Exporter Suivi Commandes</span>
-                        </button>
-                    </div>
-                    <span id="selected-indicator" class="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded border border-blue-200">
-                        Article sélectionné : Aucun
-                    </span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ================= SECTION : APPLICATION MOBILE (COMING SOON) ================= -->
-    <section id="mobile-app" class="py-24 px-4 max-w-7xl mx-auto">
-        <div class="bg-gradient-to-r from-blue-900/40 via-purple-900/40 to-slate-900 border border-purple-500/30 rounded-3xl p-8 md:p-14 shadow-2xl relative overflow-hidden">
+    <!-- ================= SECTION WORKFLOW : COMMENT ÇA MARCHE (PARTIE LONGUE & Détaillée) ================= -->
+    <section id="workflow" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto relative z-10 border-t border-white/5">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="font-mono-tech text-xs text-blue-400 uppercase tracking-widest mb-2 block">// GUIDE OPÉRATIONNEL & LOGICIEL</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Comment fonctionne chaque module d'Apparelory ERP ?</h2>
+            <p class="text-zinc-400 text-sm mt-3">Plongez dans les détails techniques et méthodologiques qui font tourner l'application au quotidien.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Étape 1 -->
+            <div class="bento-card rounded-2xl p-8 space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 font-mono-tech font-bold flex items-center justify-center text-lg">01</div>
+                    <h3 class="text-xl font-bold text-white">Gestion du Catalogue & SKU</h3>
+                </div>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Chaque référence dispose d'un identifiant unique (SKU), d'une désignation claire, d'une catégorie et d'un fournisseur attitré. Lors de la création, vous pouvez associer une miniature photo stockée localement dans `images_produits/` ou générée automatiquement par le système.
+                </p>
+                <div class="font-mono-tech text-xs text-zinc-500 pt-2 border-t border-white/5 flex items-center justify-between">
+                    <span>Validation SKU: UNIQUE</span>
+                    <span class="text-emerald-400">Actif</span>
+                </div>
+            </div>
+
+            <!-- Étape 2 -->
+            <div class="bento-card rounded-2xl p-8 space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/40 text-purple-400 font-mono-tech font-bold flex items-center justify-center text-lg">02</div>
+                    <h3 class="text-xl font-bold text-white">Entrées de Stock & Réassort</h3>
+                </div>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Lors d'une entrée de lot, l'administrateur renseigne la quantité reçue et le nouveau prix d'achat. Le système met à jour la quantité totale et recalcule mathématiquement le <strong>CUMP</strong> pour refléter la valeur réelle du capital immobilisé en entrepôt.
+                </p>
+                <div class="font-mono-tech text-xs text-zinc-500 pt-2 border-t border-white/5 flex items-center justify-between">
+                    <span>Moteur: Pondération dynamique</span>
+                    <span class="text-purple-400">Automatique</span>
+                </div>
+            </div>
+
+            <!-- Étape 3 -->
+            <div class="bento-card rounded-2xl p-8 space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 font-mono-tech font-bold flex items-center justify-center text-lg">03</div>
+                    <h3 class="text-xl font-bold text-white">Sorties & Facturation Client</h3>
+                </div>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Pour chaque vente ou sortie exceptionnelle, l'application vérifie la disponibilité physique. Si le stock est suffisant, la quantité est déduite et une facture PDF normalisée (avec en-tête, nom du client et total en devise) peut être éditée et sauvegardée instantanément.
+                </p>
+                <div class="font-mono-tech text-xs text-zinc-500 pt-2 border-t border-white/5 flex items-center justify-between">
+                    <span>Formats: PDF & CSV</span>
+                    <span class="text-emerald-400">Instantané</span>
+                </div>
+            </div>
+
+            <!-- Étape 4 -->
+            <div class="bento-card rounded-2xl p-8 space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-600/20 border border-amber-500/40 text-amber-400 font-mono-tech font-bold flex items-center justify-center text-lg">04</div>
+                    <h3 class="text-xl font-bold text-white">Sécurité & Contrôle des Rôles</h3>
+                </div>
+                <p class="text-zinc-400 text-sm leading-relaxed">
+                    Le système intègre deux profils d'accès : <strong>Admin</strong> (contrôle total sur les prix d'achat, les fournisseurs et les seuils) et <strong>User/Vendeur</strong> (interface simplifiée avec masquage automatique des marges et des prix d'achat confidentiels).
+                </p>
+                <div class="font-mono-tech text-xs text-zinc-500 pt-2 border-t border-white/5 flex items-center justify-between">
+                    <span>Authentification: Sécurisée</span>
+                    <span class="text-amber-400">Multi-niveaux</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= SECTION : ARCHITECTURE DE LA BASE DE DONNÉES (SQL) ================= -->
+    <section id="architecture-db" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto relative z-10 border-t border-white/5">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-6 space-y-6">
+                <span class="font-mono-tech text-xs text-emerald-400 uppercase tracking-widest block">// SCHÉMA RELATIONNEL SQLITE / POSTGRESQL</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Modélisation rigoureuse des données</h2>
+                <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+                    La structure repose sur trois tables principales interconnectées pour garantir l'intégrité référentielle, éviter les redondances et assurer un historique irréprochable de chaque mouvement de stock.
+                </p>
+
+                <div class="space-y-3 pt-2 font-mono-tech text-xs">
+                    <div class="bg-zinc-900 p-4 rounded-xl border border-white/10 flex items-center justify-between">
+                        <div>
+                            <span class="text-blue-400 font-bold">Table Fournisseurs</span>
+                            <div class="text-zinc-500 text-[11px] mt-0.5">id, nom_entreprise, contact_nom, telephone</div>
+                        </div>
+                        <span class="text-zinc-400">1 : N</span>
+                    </div>
+                    <div class="bg-zinc-900 p-4 rounded-xl border border-white/10 flex items-center justify-between">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Table Articles</span>
+                            <div class="text-zinc-500 text-[11px] mt-0.5">sku (PK), designation, quantite_actuelle, prix_achat, seuil</div>
+                        </div>
+                        <span class="text-zinc-400">1 : N</span>
+                    </div>
+                    <div class="bg-zinc-900 p-4 rounded-xl border border-white/10 flex items-center justify-between">
+                        <div>
+                            <span class="text-purple-400 font-bold">Table Historique</span>
+                            <div class="text-zinc-500 text-[11px] mt-0.5">id, date_mouv, sku (FK), operation, quantite, prix_vente, client</div>
+                        </div>
+                        <span class="text-emerald-400">Logs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloc Code SQL Visuel -->
+            <div class="lg:col-span-6 bg-zinc-950 rounded-2xl border border-white/10 p-6 font-mono-tech text-xs text-zinc-300 overflow-x-auto shadow-2xl">
+                <div class="flex items-center justify-between mb-4 border-b border-white/10 pb-3 text-zinc-500">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-2 text-zinc-400">schema_database.sql</span>
+                    </div>
+                    <span>SQL / Relational</span>
+                </div>
+                <pre class="text-zinc-300 leading-relaxed">
+<span class="text-purple-400">CREATE TABLE</span> <span class="text-blue-400">fournisseurs</span> (
+    id <span class="text-amber-400">SERIAL PRIMARY KEY</span>,
+    nom_entreprise <span class="text-amber-400">TEXT</span>,
+    telephone <span class="text-amber-400">TEXT</span>
+);
+
+<span class="text-purple-400">CREATE TABLE</span> <span class="text-blue-400">articles</span> (
+    sku <span class="text-amber-400">TEXT PRIMARY KEY</span>,
+    designation <span class="text-amber-400">TEXT</span>,
+    fournisseur_id <span class="text-amber-400">INTEGER</span> <span class="text-purple-400">REFERENCES</span> fournisseurs(id),
+    quantite_actuelle <span class="text-amber-400">INTEGER DEFAULT 0</span>,
+    prix_achat <span class="text-amber-400">NUMERIC DEFAULT 0.0</span>,
+    seuil_alerte <span class="text-amber-400">INTEGER DEFAULT 50</span>
+);
+
+<span class="text-purple-400">CREATE TABLE</span> <span class="text-blue-400">historique</span> (
+    id <span class="text-amber-400">SERIAL PRIMARY KEY</span>,
+    date_mouv <span class="text-amber-400">TEXT</span>,
+    sku <span class="text-amber-400">TEXT</span> <span class="text-purple-400">REFERENCES</span> articles(sku),
+    operation <span class="text-amber-400">TEXT</span>,
+    quantite <span class="text-amber-400">INTEGER</span>,
+    client <span class="text-amber-400">TEXT DEFAULT ''</span>
+);</pre>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= BENTO GRID : INGÉNIERIE CUMP ================= -->
+    <section id="ingenierie" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto relative z-10 border-t border-white/5">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 border-b border-white/10 pb-8">
+            <div>
+                <span class="font-mono-tech text-xs text-blue-400 uppercase tracking-widest mb-2 block">// MOTEUR MATHÉMATIQUE</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Pensé par un Logisticien.<br><span class="text-zinc-500">Codé pour la précision financière.</span></h2>
+            </div>
+            <p class="text-zinc-400 text-sm max-w-md mt-4 md:mt-0">
+                La méthode du Coût Unitaire Moyen Pondéré garantit une valorisation comptable irréprochable, indispensable dans la gestion des stocks.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+            
+            <div class="md:col-span-8 bento-card rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="font-mono-tech text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded">ALGORITHME FINANCIER</span>
+                        <span class="font-mono-tech text-xs text-zinc-500">MODULE_CUMP</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Valorisation dynamique après réapprovisionnement</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed max-w-2xl">
+                        Le système calcule automatiquement la pondération entre l'ancien stock existant et le nouveau lot entrant.
+                    </p>
+                </div>
+
+                <div class="mt-8 bg-zinc-950/90 border border-white/10 rounded-xl p-5 font-mono-tech text-xs sm:text-sm">
+                    <div class="text-zinc-500 mb-2">// Formule mathématique officielle :</div>
+                    <div class="text-zinc-200 overflow-x-auto whitespace-nowrap py-1">
+                        <span class="text-purple-400">Nouveau_CUMP</span> = 
+                        ( (<span class="text-blue-400">Stock_Actuel</span> × <span class="text-blue-400">Ancien_CUMP</span>) + (<span class="text-emerald-400">Qté_Entrée</span> × <span class="text-emerald-400">Prix_Lot</span>) ) 
+                        / <span class="text-amber-400">Stock_Total</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-4 bento-card rounded-2xl p-8 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="font-mono-tech text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded">SEUIL</span>
+                        <span class="font-mono-tech text-xs text-zinc-500">ALERT_SYS</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Alerte Critique Visuelle</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Coloration conditionnelle immédiate dès que le stock physique atteint ou descend sous le seuil critique.
+                    </p>
+                </div>
+                <div class="mt-6 bg-rose-950/30 border border-rose-500/30 rounded-xl p-4 flex items-center justify-between">
+                    <div>
+                        <div class="font-mono-tech text-[11px] text-rose-300">SKU: 57478484874</div>
+                        <div class="font-bold text-white text-sm">IPHONE (Stock: 10)</div>
+                    </div>
+                    <span class="px-2.5 py-1 bg-rose-600 text-white font-mono-tech text-[10px] font-bold rounded">ALERTE</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= SECTION : APP MOBILE ================= -->
+    <section id="mobile-app" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto relative z-10 border-t border-white/5">
+        <div class="bento-card rounded-3xl p-8 md:p-14 border border-white/10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 text-xs font-bold uppercase tracking-wider">
-                        <i class="fa-solid fa-rocket animate-bounce"></i> En cours de développement • Coming Soon
+                    <div class="inline-flex items-center gap-2.5 px-3 py-1 rounded bg-purple-500/10 border border-purple-500/30 font-mono-tech text-xs text-purple-300">
+                        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                        ROADMAP R&D • BIENTÔT SUR IOS & ANDROID
                     </div>
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
-                        Apparelory <span class="text-purple-400">Mobile</span> :<br> Votre entrepôt dans votre poche.
+                    
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                        Extension Mobile.<br>
+                        <span class="text-zinc-500">Le scanner d'entrepôt déporté.</span>
                     </h2>
-                    <p class="text-slate-300 text-base md:text-lg leading-relaxed">
-                        Développement en cours de la version mobile compagnon (iOS & Android) propulsée par <strong>Flet / Flutter</strong> et reliée en temps réel à la même base de données Cloud <strong>Supabase</strong> que la version PC.
+                    
+                    <p class="text-zinc-400 text-base leading-relaxed">
+                        Développement en cours d'une application compagnon (via <strong>Flet / Flutter</strong>) connectée au même noyau de base de données pour permettre aux opérateurs logistiques d'agir directement dans les couloirs de stockage.
                     </p>
-
-                    <div class="space-y-4 pt-2">
-                        <h3 class="text-white font-bold text-lg">Comment fonctionnera l'application mobile ?</h3>
-                        <div class="flex items-start gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-700/80">
-                            <div class="bg-blue-600/20 text-blue-400 p-3 rounded-lg text-xl mt-1"><i class="fa-solid fa-barcode"></i></div>
-                            <div>
-                                <h4 class="font-bold text-white text-base">1. Scan Code-Barres par Caméra</h4>
-                                <p class="text-slate-400 text-sm">Utilisez l'appareil photo du téléphone pour scanner le SKU d'un produit et faire une entrée ou une vente en 2 secondes dans les rayons.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-700/80">
-                            <div class="bg-purple-600/20 text-purple-400 p-3 rounded-lg text-xl mt-1"><i class="fa-solid fa-rotate"></i></div>
-                            <div>
-                                <h4 class="font-bold text-white text-base">2. Synchronisation Instantanée PC ↔ Mobile</h4>
-                                <p class="text-slate-400 text-sm">Toute modification faite sur le téléphone met à jour instantanément le tableau et le CUMP sur l'ordinateur de l'administrateur.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-700/80">
-                            <div class="bg-rose-600/20 text-rose-400 p-3 rounded-lg text-xl mt-1"><i class="fa-solid fa-bell"></i></div>
-                            <div>
-                                <h4 class="font-bold text-white text-base">3. Notifications Push de Rupture</h4>
-                                <p class="text-slate-400 text-sm">Recevez une alerte directement sur votre smartphone dès qu'un article atteint son seuil critique d'alerte.</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Mockup Smartphone -->
                 <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative w-[300px] h-[600px] bg-slate-950 rounded-[45px] border-[10px] border-slate-800 shadow-2xl flex flex-col justify-between overflow-hidden">
-                        <div class="absolute top-0 inset-x-0 h-6 bg-slate-800 w-36 mx-auto rounded-b-2xl z-20 flex items-center justify-center">
-                            <div class="w-12 h-1.5 bg-slate-950 rounded-full"></div>
-                        </div>
-                        <div class="absolute top-10 -right-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs font-extrabold px-12 py-1.5 rotate-45 z-30 shadow-lg">
+                    <div class="relative w-[290px] h-[570px] bg-zinc-950 rounded-[42px] border-[8px] border-zinc-800 shadow-2xl flex flex-col justify-between overflow-hidden">
+                        <div class="absolute top-0 inset-x-0 h-5 bg-zinc-800 w-32 mx-auto rounded-b-xl z-20"></div>
+                        <div class="absolute top-9 -right-10 bg-white text-zinc-950 font-mono-tech text-[10px] font-extrabold px-12 py-1 rotate-45 z-30 shadow-lg">
                             COMING SOON
                         </div>
-                        <div class="bg-blue-700 pt-9 pb-4 px-4 text-white flex items-center justify-between shadow-md">
-                            <div class="flex items-center gap-2 font-bold text-sm">
-                                <img src="logo.png" class="app-logo-img w-5 h-5 object-contain rounded" onerror="this.style.display='none';">
-                                <span>Apparelory Mobile</span>
+                        <div class="bg-zinc-900 pt-8 pb-3.5 px-4 text-white flex items-center justify-between border-b border-white/10">
+                            <div class="flex items-center gap-2 font-bold text-xs">
+                                <img src="logo.png" class="app-logo-img w-4 h-4 object-contain rounded" onerror="this.style.display='none';">
+                                <span>Apparelory.mob</span>
                             </div>
-                            <span class="text-[10px] bg-emerald-500 px-2 py-0.5 rounded-full font-bold">Online</span>
+                            <span class="font-mono-tech text-[9px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">SYNC_OK</span>
                         </div>
-                        <div class="p-4 flex-1 bg-slate-900 space-y-3 overflow-y-auto">
+                        <div class="p-4 flex-1 bg-[#0c0c0e] space-y-3 overflow-y-auto">
                             <div class="grid grid-cols-2 gap-2">
-                                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
-                                    <i class="fa-solid fa-wallet text-emerald-400 text-lg mb-1"></i>
-                                    <div class="text-[10px] text-slate-400">Valeur Stock</div>
-                                    <div class="text-sm font-bold text-white">389 295 DH</div>
+                                <div class="bg-zinc-900 p-3 rounded-xl border border-white/5">
+                                    <div class="font-mono-tech text-[9px] text-zinc-500">VALEUR STOCK</div>
+                                    <div class="text-xs font-bold text-white mt-1">389 295 DH</div>
                                 </div>
-                                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
-                                    <i class="fa-solid fa-triangle-exclamation text-rose-500 text-lg mb-1"></i>
-                                    <div class="text-[10px] text-slate-400">Alertes</div>
-                                    <div class="text-sm font-bold text-rose-400">2 Produits</div>
+                                <div class="bg-zinc-900 p-3 rounded-xl border border-white/5">
+                                    <div class="font-mono-tech text-[9px] text-zinc-500">RUPTURES</div>
+                                    <div class="text-xs font-bold text-rose-400 mt-1">2 Alertes</div>
                                 </div>
                             </div>
-                            <div class="text-xs font-bold text-slate-400 pt-2 uppercase">Aperçu Rapide du Stock</div>
-                            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-lg">💻</div>
-                                    <div>
-                                        <div class="font-bold text-white text-sm">PC HP</div>
-                                        <div class="text-[11px] text-slate-400">CUMP: 1900 DH</div>
-                                    </div>
+                            <div class="font-mono-tech text-[10px] text-zinc-500 pt-2">INVENTAIRE ACTIF</div>
+                            <div class="bg-zinc-900 p-3 rounded-xl border border-white/5 flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-white text-xs">PC HP</div>
+                                    <div class="font-mono-tech text-[10px] text-zinc-500">SKU: 544845544</div>
                                 </div>
-                                <div class="text-right">
-                                    <div class="text-emerald-400 font-extrabold text-sm">40 pcs</div>
-                                </div>
+                                <div class="text-emerald-400 font-mono-tech font-bold text-xs">40 pcs</div>
                             </div>
-                            <div class="bg-rose-950/40 p-3 rounded-xl border border-rose-500/50 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-rose-900/50 flex items-center justify-center text-lg">📱</div>
-                                    <div>
-                                        <div class="font-bold text-white text-sm">IPHONE</div>
-                                        <div class="text-[11px] text-rose-300">Seuil: 15 pcs ⚠️</div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-rose-400 font-extrabold text-sm">10 pcs</div>
-                                </div>
-                            </div>
-                            <div class="pt-2">
-                                <div class="w-full bg-purple-600/30 border border-purple-500 text-purple-200 py-2.5 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-camera"></i> Scanner un Code-Barres
+                            <div class="pt-3">
+                                <div class="w-full bg-white text-zinc-950 py-2.5 rounded-lg text-center text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-barcode"></i> Scanner un lot
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-slate-950 border-t border-slate-800 py-3 px-6 flex justify-between text-slate-500 text-xs">
-                            <div class="text-blue-500 flex flex-col items-center"><i class="fa-solid fa-chart-pie"></i><span class="text-[9px] mt-1">Bord</span></div>
-                            <div class="flex flex-col items-center"><i class="fa-solid fa-box"></i><span class="text-[9px] mt-1">Stock</span></div>
-                            <div class="flex flex-col items-center"><i class="fa-solid fa-clock-rotate-left"></i><span class="text-[9px] mt-1">Histo</span></div>
-                            <div class="flex flex-col items-center"><i class="fa-solid fa-gear"></i><span class="text-[9px] mt-1">Param</span></div>
+                        <div class="bg-zinc-950 border-t border-white/5 py-3 px-6 flex justify-between text-zinc-600 text-xs">
+                            <i class="fa-solid fa-chart-simple text-white"></i>
+                            <i class="fa-solid fa-box"></i>
+                            <i class="fa-solid fa-sliders"></i>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- ================= MODALS (FENÊTRES POPUP) ================= -->
-    
-    <!-- Modal : Gestion des Fournisseurs -->
-    <div id="modal-fourn" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+    <!-- ================= SECTION ARCHITECTE ================= -->
+    <section id="auteur" class="py-24 px-4 sm:px-6 max-w-5xl mx-auto relative z-10 border-t border-white/5">
+        <div class="bento-card rounded-3xl p-8 sm:p-12 border border-white/10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                
+                <div class="md:col-span-4 flex flex-col items-center md:items-start border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 md:pr-8">
+                    <div class="w-16 h-16 bg-white text-zinc-950 rounded-2xl flex items-center justify-center text-xl font-extrabold mb-4">
+                        NB
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Noureddine Boukestane</h3>
+                    <p class="font-mono-tech text-xs text-blue-400 mt-1">Logistique & Supply Chain</p>
+                    <div class="mt-4 space-y-1 font-mono-tech text-[11px] text-zinc-500">
+                        <div>📍 Marrakech, Maroc</div>
+                        <div>🎓 FSJES - Univ. Cadi Ayyad</div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-8 space-y-4">
+                    <div class="font-mono-tech text-xs text-zinc-500 uppercase">// À PROPOS DU CRÉATEUR</div>
+                    <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+                        Diplômé en <strong>Logistique et Supply Chain Management</strong> de l'Université Cadi Ayyad de Marrakech. Passionné par la digitalisation des opérations logistiques, je développe des outils sur mesure (Python, ERP, automatisation Excel VBA, systèmes WMS) qui transforment la théorie analytique en gains de productivité concrets sur le terrain.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-zinc-900 border border-white/10 rounded font-mono-tech text-xs text-zinc-300">Gestion des Stocks</span>
+                        <span class="px-3 py-1 bg-zinc-900 border border-white/10 rounded font-mono-tech text-xs text-zinc-300">Approvisionnement</span>
+                        <span class="px-3 py-1 bg-zinc-900 border border-white/10 rounded font-mono-tech text-xs text-zinc-300">Python & SQL</span>
+                        <span class="px-3 py-1 bg-zinc-900 border border-white/10 rounded font-mono-tech text-xs text-zinc-300">SAP S/4HANA & ERP</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 px-6 border-t border-white/5 text-center font-mono-tech text-xs text-zinc-600 relative z-10">
+        <p>CONÇU ET DÉVELOPPÉ PAR NOUREDDINE BOUKESTANE — MARRAKECH © 2026</p>
+    </footer>
+
+    <!-- ================= MODALS ================= -->
+    <div id="modal-fourn" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white text-slate-800 rounded-xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
                 <h3 class="font-bold text-lg text-[#9954bb]">👥 Gestion des Fournisseurs</h3>
                 <button onclick="closeModal('modal-fourn')" class="text-slate-400 hover:text-red-500 text-xl font-bold">&times;</button>
             </div>
-            
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3 text-sm">
                 <input type="text" id="fourn-nom" placeholder="Entreprise (Ex: SINTRA)" class="border rounded px-3 py-1.5">
                 <input type="text" id="fourn-contact" placeholder="Nom du Contact" class="border rounded px-3 py-1.5">
@@ -399,7 +691,6 @@
             <button onclick="addFournisseur()" class="w-full bg-[#3fb618] hover:bg-[#349813] text-white font-bold py-2 rounded shadow text-sm mb-4 transition">
                 + Ajouter Fournisseur
             </button>
-
             <div class="border rounded max-h-56 overflow-y-auto">
                 <table class="w-full text-left border-collapse text-xs sm:text-sm">
                     <thead>
@@ -416,8 +707,7 @@
         </div>
     </div>
 
-    <!-- Modal : Créer un article -->
-    <div id="modal-add" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+    <div id="modal-add" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white text-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
                 <h3 class="font-bold text-lg text-blue-600">➕ Créer un article</h3>
@@ -467,8 +757,7 @@
         </div>
     </div>
 
-    <!-- Modal : Mouvement de Stock -->
-    <div id="modal-mouv" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+    <div id="modal-mouv" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white text-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
                 <h3 id="mouv-title" class="font-bold text-lg text-blue-600">Mouvement de Stock</h3>
@@ -504,52 +793,8 @@
         </div>
     </div>
 
-    <!-- ================= FONCTIONNALITÉS (MODULES) ================= -->
-    <section id="fonctionnalites" class="py-16 px-4 max-w-7xl mx-auto">
-        <div class="text-center mb-14">
-            <h2 class="text-blue-500 font-semibold tracking-wide uppercase text-sm mb-2">Architecture & Fonctionnalités</h2>
-            <h3 class="text-3xl font-bold text-white">Pourquoi Apparelory ERP se démarque ?</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-cloud"></i></div>
-                <h4 class="text-lg font-bold text-white mb-2">Base de données Cloud (Supabase)</h4>
-                <p class="text-slate-400 text-sm">Fini les fichiers locaux isolés. Toutes les données sont synchronisées en temps réel sur un serveur PostgreSQL sécurisé.</p>
-            </div>
-            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-scale-balanced"></i></div>
-                <h4 class="text-lg font-bold text-white mb-2">Méthode CUMP Intégrée</h4>
-                <p class="text-slate-400 text-sm">Calcul mathématique exact du Coût Unitaire Moyen Pondéré à chaque réapprovisionnement pour une comptabilité juste.</p>
-            </div>
-            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-language"></i></div>
-                <h4 class="text-lg font-bold text-white mb-2">Multilingue & Multi-Devises</h4>
-                <p class="text-slate-400 text-sm">Changement à la volée entre Français, Anglais et Arabe, ainsi que les devises (DH, €, $) sans redémarrer le programme.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= SECTION CRÉATEUR (NOUREDDINE BOUKESTANE) ================= -->
-    <section id="auteur" class="py-16 px-4 max-w-4xl mx-auto text-center">
-        <div class="bg-gradient-to-b from-slate-800 to-slate-900 p-8 md:p-10 rounded-3xl border border-slate-700 shadow-xl">
-            <div class="w-20 h-20 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl font-extrabold text-white mb-4 shadow-lg shadow-blue-500/30">
-                NB
-            </div>
-            <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Développé par Noureddine Boukestane</h2>
-            <p class="text-blue-400 text-sm md:text-base font-medium mb-4">Spécialiste en Logistique, Supply Chain Management & Développement ERP</p>
-            <p class="text-slate-400 max-w-2xl mx-auto mb-6 text-sm leading-relaxed">
-                Titulaire d'une Licence en Logistique et Supply Chain Management (FSJES - Université Cadi Ayyad Marrakech). Ce projet allie la maîtrise des concepts logistiques (gestion des approvisionnements, méthode CUMP, seuils de sécurité) à l'automatisation informatique moderne.
-            </p>
-        </div>
-    </section>
-
-    <footer class="py-6 text-center text-slate-500 text-xs border-t border-slate-800">
-        <p>© 2026 Apparelory ERP - Créé par <strong>Noureddine Boukestane</strong> (Marrakech, Maroc).</p>
-    </footer>
-
-    <!-- ================= LOGIQUE JAVASCRIPT COMPLÈTE ================= -->
+    <!-- ================= LOGIC JS ================= -->
     <script>
-        // 1. Base de données Fournisseurs
         let fournisseurs = [
             { id: 1, nom: "AKWA", contact: "Karim Bennani", tel: "0522-458912" },
             { id: 2, nom: "SONDA", contact: "Youssef Alami", tel: "0524-331122" },
@@ -560,7 +805,6 @@
             { id: 7, nom: "KARAM", contact: "Mehdi Fassi", tel: "0524-887766" }
         ];
 
-        // 2. Base de données Articles
         let articles = [
             { sku: "5188158418", des: "SALIM", cat: "BOISSONS", fourn: "AKWA", qte: 100, cump: 4.45, seuil: 20, date: "2026-10-09 00:45", img: "🥤" },
             { sku: "8545418441", des: "COCA COLA", cat: "BOISSONS", fourn: "SONDA", qte: 90, cump: 5.50, seuil: 20, date: "2026-10-09 00:46", img: "🥫" },
@@ -572,7 +816,6 @@
             { sku: "5451515", des: "PC DELL", cat: "INFORMATIQUE", fourn: "KARAM", qte: 80, cump: 2500.00, seuil: 10, date: "2026-10-10 15:35", img: "🖥️" }
         ];
 
-        // 3. Historique des mouvements
         let historique = [
             { date: "2026-01-10", sku: "5188158418", type: "ENTREE", qte: 120, pa: 4.45, pv: 0 },
             { date: "2026-02-14", sku: "5188158418", type: "VENTE", qte: 50, pa: 4.45, pv: 7.00 },
@@ -643,12 +886,12 @@
 
                 tr.innerHTML = `
                     <td class="py-2 px-3">${imgHtml}</td>
-                    <td class="py-2 px-3 font-mono font-semibold">${art.sku}</td>
+                    <td class="py-2 px-3 font-mono-tech font-semibold">${art.sku}</td>
                     <td class="py-2 px-3 font-bold">${art.des}</td>
                     <td class="py-2 px-3">${art.cat}</td>
                     <td class="py-2 px-3">${art.fourn}</td>
                     <td class="py-2 px-3 font-extrabold ${isAlert ? 'text-red-700' : 'text-slate-800'}">${art.qte}</td>
-                    <td class="py-2 px-3 font-semibold">${art.cump.toFixed(2)} ${CURR}</td>
+                    <td class="py-2 px-3 font-mono-tech font-semibold">${art.cump.toFixed(2)} ${CURR}</td>
                     <td class="py-2 px-3">${art.seuil}</td>
                     <td class="py-2 px-3 text-xs opacity-80">${art.date}</td>
                 `;
@@ -803,7 +1046,7 @@
             fournisseurs.forEach(f => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50">
-                        <td class="py-1.5 px-2 font-mono">${f.id}</td>
+                        <td class="py-1.5 px-2 font-mono-tech">${f.id}</td>
                         <td class="py-1.5 px-2 font-bold text-purple-700">${f.nom}</td>
                         <td class="py-1.5 px-2">${f.contact}</td>
                         <td class="py-1.5 px-2">${f.tel}</td>
