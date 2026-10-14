@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apparelory ERP - Noureddine Boukestane</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="fixed w-full z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- LOGO OFFICIEL FIXE -->
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="Logo" class="app-logo-img h-10 w-10 object-contain rounded-lg border border-slate-700 bg-slate-800" onerror="this.style.display='none'; document.getElementById('nav-fallback-icon').style.display='flex';">
+                    <div id="nav-fallback-icon" class="hidden bg-blue-600 p-2 rounded-lg items-center justify-center">
+                        <i class="fa-solid fa-boxes-stacked text-white text-xl"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-white">Apparelory <span class="text-blue-500">ERP</span></span>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <a href="#accueil" class="hover:text-blue-400 transition px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
+                        <a href="#live-demo" class="text-blue-400 font-semibold px-3 py-2 rounded-md text-sm"><i class="fa-solid fa-play mr-1"></i> Démo PC</a>
+                        <a href="#mobile-app" class="text-purple-400 font-semibold px-3 py-2 rounded-md text-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-mobile-screen-button"></i> App Mobile <span class="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30">Soon</span>
+                        </a>
+                        <a href="#fonctionnalites" class="hover:text-blue-400 transition px-3 py-2 rounded-md text-sm font-medium">Modules</a>
+                        <a href="#auteur" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-lg shadow-blue-500/30">Créateur</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section id="accueil" class="pt-28 pb-10 px-4 max-w-7xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-6">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Simulateur ERP 100% Interactif ci-dessous !
+        </div>
+        
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
+            Testez <span class="gradient-text">Apparelory ERP</span> <br class="hidden sm:block">directement dans votre navigateur.
+        </h1>
+        
+        <p class="max-w-2xl mx-auto text-base md:text-lg text-slate-400 mb-6">
+            Conçu par <strong>Noureddine Boukestane</strong>. Gérez vos fournisseurs, ajoutez des articles, effectuez des entrées/sorties avec calcul du CUMP, et filtrez vos graphiques financiers par année, mois et produit !
+        </p>
+    </section>
+
+    <!-- ================= LIVE INTERACTIVE APP SIMULATOR (PC) ================= -->
+    <section id="live-demo" class="py-2 px-2 sm:px-4 max-w-7xl mx-auto">
+        <div class="rounded-xl bg-slate-800 p-2 sm:p-3 border border-slate-700 shadow-2xl">
+            
+            <!-- Barre de titre Windows -->
+            <div class="flex items-center justify-between bg-slate-900 px-4 py-2.5 rounded-t-lg border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <img src="logo.png" alt="Logo App" class="app-logo-img w-5 h-5 object-contain rounded" onerror="this.style.display='none'; document.getElementById('win-fallback-icon').style.display='inline-block';">
+                    <i id="win-fallback-icon" class="fa-solid fa-box-open text-blue-500 hidden text-sm"></i>
+                    <span id="win-title" class="text-xs sm:text-sm text-slate-200 font-semibold">Apparelory Store ERP - Connecté en tant que: Admin | Online (Supabase)</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                </div>
+            </div>
+
+            <!-- Corps de l'application -->
+            <div class="bg-[#f8f9fa] text-slate-800 rounded-b-lg p-3 sm:p-5 min-h-[640px] flex flex-col justify-between shadow-inner">
+                <div>
+                    <!-- Onglets -->
+                    <div class="flex flex-wrap border-b border-slate-300 mb-4 gap-1">
+                        <button onclick="switchTab('stock')" id="tab-btn-stock" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-blue-600 text-white flex items-center gap-2 transition">
+                            📦 <span id="lbl-tab-stock">Gestion du Magasin</span>
+                        </button>
+                        <button onclick="switchTab('dash')" id="tab-btn-dash" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2 transition">
+                            📊 <span id="lbl-tab-dash">Dashboard Analytique</span>
+                        </button>
+                        <button onclick="switchTab('settings')" id="tab-btn-settings" class="px-4 py-2.5 text-sm font-bold rounded-t-lg bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2 transition">
+                            ⚙️ <span id="lbl-tab-settings">Paramètres</span>
+                        </button>
+                    </div>
+
+                    <!-- ==================== ONGLET 1 : MAGASIN ==================== -->
+                    <div id="view-stock" class="space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-2">
+                                <button onclick="openAddArticleModal()" class="bg-[#3fb618] hover:bg-[#349813] text-white px-4 py-2 rounded font-semibold text-sm shadow flex items-center gap-2 transition">
+                                    <i class="fa-solid fa-plus"></i> <span id="btn-add-art">Créer un article</span>
+                                </button>
+                                <button onclick="openFournisseursModal()" class="bg-[#9954bb] hover:bg-[#8246a0] text-white px-4 py-2 rounded font-semibold text-sm shadow flex items-center gap-2 transition">
+                                    <i class="fa-solid fa-users"></i> <span id="btn-fourn">Fournisseurs</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <label class="font-bold text-sm text-slate-700 whitespace-nowrap" id="lbl-search">🔍 Rechercher :</label>
+                                <input type="text" id="search-input" onkeyup="renderTable()" placeholder="SKU, Désignation, Catégorie..." class="border border-slate-300 rounded px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:border-blue-600 bg-white">
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-300 rounded overflow-hidden bg-white shadow-sm">
+                            <div class="overflow-x-auto max-h-[380px]">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-[#2780e3] text-white text-xs sm:text-sm font-semibold text-center select-none">
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-photo">Photo</th>
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-sku">SKU</th>
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-des">Désignation</th>
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-cat">Catégorie</th>
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-fourn">Fournisseur</th>
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-qte">Quantité</th>
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-prix">Prix Moyen (CUMP)</th>
+                                            <th class="py-2.5 px-3 border-r border-blue-400/30" id="th-seuil">Seuil</th>
+                                            <th class="py-2.5 px-3" id="th-date">Date d'ajout</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body" class="divide-y divide-slate-200 text-xs sm:text-sm text-center"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==================== ONGLET 2 : DASHBOARD ANALYTIQUE ==================== -->
+                    <div id="view-dash" class="hidden space-y-4">
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm flex flex-wrap items-center gap-4 text-sm">
+                            <div class="flex items-center gap-2">
+                                <label class="font-bold text-slate-700">📅 Année :</label>
+                                <select id="dash-annee" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
+                                    <option value="2026" selected>2026</option>
+                                    <option value="2025">2025</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <label class="font-bold text-slate-700">📆 Mois :</label>
+                                <select id="dash-mois" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
+                                    <option value="Tous les mois" selected>Tous les mois (Annuel)</option>
+                                    <option value="01">01 - Janvier</option>
+                                    <option value="02">02 - Février</option>
+                                    <option value="03">03 - Mars</option>
+                                    <option value="04">04 - Avril</option>
+                                    <option value="05">05 - Mai</option>
+                                    <option value="06">06 - Juin</option>
+                                    <option value="07">07 - Juillet</option>
+                                    <option value="08">08 - Août</option>
+                                    <option value="09">09 - Septembre</option>
+                                    <option value="10">10 - Octobre</option>
+                                    <option value="11">11 - Novembre</option>
+                                    <option value="12">12 - Décembre</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2 flex-1 min-w-[220px]">
+                                <label class="font-bold text-slate-700 whitespace-nowrap">📦 Produit :</label>
+                                <select id="dash-produit" onchange="renderCharts()" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white font-semibold text-slate-800 w-full focus:outline-none focus:border-blue-600">
+                                    <option value="Tous les produits">Tous les produits</option>
+                                </select>
+                            </div>
+
+                            <button onclick="renderCharts()" class="bg-slate-600 hover:bg-slate-700 text-white font-bold px-4 py-1.5 rounded shadow transition flex items-center gap-1.5">
+                                🔄 Actualiser
+                            </button>
+                        </div>
+
+                        <!-- KPIs -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-[#2780e3] text-white p-4 rounded-lg shadow text-center">
+                                <div class="text-xs sm:text-sm font-semibold opacity-90">📦 Références</div>
+                                <div id="kpi-refs" class="text-2xl font-extrabold mt-1">0</div>
+                            </div>
+                            <div class="bg-[#9954bb] text-white p-4 rounded-lg shadow text-center">
+                                <div class="text-xs sm:text-sm font-semibold opacity-90">🔢 Total Pièces</div>
+                                <div id="kpi-pieces" class="text-2xl font-extrabold mt-1">0</div>
+                            </div>
+                            <div class="bg-[#ff0039] text-white p-4 rounded-lg shadow text-center">
+                                <div class="text-xs sm:text-sm font-semibold opacity-90">⚠️ En Alerte</div>
+                                <div id="kpi-alerte" class="text-2xl font-extrabold mt-1">0</div>
+                            </div>
+                            <div class="bg-[#3fb618] text-white p-4 rounded-lg shadow text-center">
+                                <div class="text-xs sm:text-sm font-semibold opacity-90">💰 Valeur Stock</div>
+                                <div id="kpi-valeur" class="text-2xl font-extrabold mt-1">0.00 DH</div>
+                            </div>
+                        </div>
+
+                        <!-- Graphiques Dynamiques -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                            <div>
+                                <h4 id="chart1-title" class="text-center font-bold text-slate-800 mb-2 text-sm">Mouvements (Pièces)</h4>
+                                <canvas id="chartMouvements" height="175"></canvas>
+                            </div>
+                            <div>
+                                <h4 id="chart2-title" class="text-center font-bold text-slate-800 mb-2 text-sm">Finances Globales</h4>
+                                <canvas id="chartFinances" height="175"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==================== ONGLET 3 : PARAMÈTRES ==================== -->
+                    <div id="view-settings" class="hidden p-4 max-w-md space-y-5 bg-white rounded-lg border border-slate-200 shadow-sm">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-2">Langue de l'application :</label>
+                            <select id="select-lang" class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-800">
+                                <option value="fr">Français (fr)</option>
+                                <option value="en">English (en)</option>
+                                <option value="ar">العربية (ar)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-2">Devise par défaut :</label>
+                            <select id="select-curr" class="w-full border border-slate-300 rounded px-3 py-2 bg-white text-slate-800">
+                                <option value="DH">Dirham Marocain (DH)</option>
+                                <option value="€">Euro (€)</option>
+                                <option value="$">Dollar ($)</option>
+                            </select>
+                        </div>
+                        <button onclick="applySettings()" class="bg-[#3fb618] hover:bg-[#349813] text-white font-bold px-6 py-2.5 rounded shadow transition w-full">
+                            Sauvegarder et Appliquer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Barre d'actions en bas -->
+                <div id="bottom-actions" class="pt-4 mt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="openMouvModal('plus')" class="bg-[#2780e3] hover:bg-blue-700 text-white px-4 py-2 rounded font-bold text-sm shadow flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-plus"></i> <span id="btn-in">Entrée</span>
+                        </button>
+                        <button onclick="openMouvModal('moins')" class="bg-[#ff7518] hover:bg-orange-600 text-white px-4 py-2 rounded font-bold text-sm shadow flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-minus"></i> <span id="btn-out">Sortie (Vente)</span>
+                        </button>
+                        <button onclick="exportCSV()" class="border-2 border-[#3fb618] text-[#3fb618] hover:bg-[#3fb618] hover:text-white px-4 py-1.5 rounded font-bold text-sm flex items-center gap-1.5 transition ml-0 sm:ml-4">
+                            📊 <span id="btn-export">Exporter Suivi Commandes</span>
+                        </button>
+                    </div>
+                    <span id="selected-indicator" class="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded border border-blue-200">
+                        Article sélectionné : Aucun
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SECTION : APPLICATION MOBILE (COMING SOON) ================= -->
+    <section id="mobile-app" class="py-24 px-4 max-w-7xl mx-auto">
+        <div class="bg-gradient-to-r from-blue-900/40 via-purple-900/40 to-slate-900 border border-purple-500/30 rounded-3xl p-8 md:p-14 shadow-2xl relative overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-rocket animate-bounce"></i> En cours de développement • Coming Soon
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
+                        Apparelory <span class="text-purple-400">Mobile</span> :<br> Votre entrepôt dans votre poche.
+                    </h2>
+                    <p class="text-slate-300 text-base md:text-lg leading-relaxed">
+                        Développement en cours de la version mobile compagnon (iOS & Android) propulsée par <strong>Flet / Flutter</strong> et reliée en temps réel à la même base de données Cloud <strong>Supabase</strong> que la version PC.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <h3 class="text-white font-bold text-lg">Comment fonctionnera l'application mobile ?</h3>
+                        <div class="flex items-start gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-700/80">
+                            <div class="bg-blue-600/20 text-blue-400 p-3 rounded-lg text-xl mt-1"><i class="fa-solid fa-barcode"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">1. Scan Code-Barres par Caméra</h4>
+                                <p class="text-slate-400 text-sm">Utilisez l'appareil photo du téléphone pour scanner le SKU d'un produit et faire une entrée ou une vente en 2 secondes dans les rayons.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-700/80">
+                            <div class="bg-purple-600/20 text-purple-400 p-3 rounded-lg text-xl mt-1"><i class="fa-solid fa-rotate"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">2. Synchronisation Instantanée PC ↔ Mobile</h4>
+                                <p class="text-slate-400 text-sm">Toute modification faite sur le téléphone met à jour instantanément le tableau et le CUMP sur l'ordinateur de l'administrateur.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-700/80">
+                            <div class="bg-rose-600/20 text-rose-400 p-3 rounded-lg text-xl mt-1"><i class="fa-solid fa-bell"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">3. Notifications Push de Rupture</h4>
+                                <p class="text-slate-400 text-sm">Recevez une alerte directement sur votre smartphone dès qu'un article atteint son seuil critique d'alerte.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mockup Smartphone -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-[300px] h-[600px] bg-slate-950 rounded-[45px] border-[10px] border-slate-800 shadow-2xl flex flex-col justify-between overflow-hidden">
+                        <div class="absolute top-0 inset-x-0 h-6 bg-slate-800 w-36 mx-auto rounded-b-2xl z-20 flex items-center justify-center">
+                            <div class="w-12 h-1.5 bg-slate-950 rounded-full"></div>
+                        </div>
+                        <div class="absolute top-10 -right-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs font-extrabold px-12 py-1.5 rotate-45 z-30 shadow-lg">
+                            COMING SOON
+                        </div>
+                        <div class="bg-blue-700 pt-9 pb-4 px-4 text-white flex items-center justify-between shadow-md">
+                            <div class="flex items-center gap-2 font-bold text-sm">
+                                <img src="logo.png" class="app-logo-img w-5 h-5 object-contain rounded" onerror="this.style.display='none';">
+                                <span>Apparelory Mobile</span>
+                            </div>
+                            <span class="text-[10px] bg-emerald-500 px-2 py-0.5 rounded-full font-bold">Online</span>
+                        </div>
+                        <div class="p-4 flex-1 bg-slate-900 space-y-3 overflow-y-auto">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
+                                    <i class="fa-solid fa-wallet text-emerald-400 text-lg mb-1"></i>
+                                    <div class="text-[10px] text-slate-400">Valeur Stock</div>
+                                    <div class="text-sm font-bold text-white">389 295 DH</div>
+                                </div>
+                                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
+                                    <i class="fa-solid fa-triangle-exclamation text-rose-500 text-lg mb-1"></i>
+                                    <div class="text-[10px] text-slate-400">Alertes</div>
+                                    <div class="text-sm font-bold text-rose-400">2 Produits</div>
+                                </div>
+                            </div>
+                            <div class="text-xs font-bold text-slate-400 pt-2 uppercase">Aperçu Rapide du Stock</div>
+                            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-lg">💻</div>
+                                    <div>
+                                        <div class="font-bold text-white text-sm">PC HP</div>
+                                        <div class="text-[11px] text-slate-400">CUMP: 1900 DH</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-emerald-400 font-extrabold text-sm">40 pcs</div>
+                                </div>
+                            </div>
+                            <div class="bg-rose-950/40 p-3 rounded-xl border border-rose-500/50 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-rose-900/50 flex items-center justify-center text-lg">📱</div>
+                                    <div>
+                                        <div class="font-bold text-white text-sm">IPHONE</div>
+                                        <div class="text-[11px] text-rose-300">Seuil: 15 pcs ⚠️</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-rose-400 font-extrabold text-sm">10 pcs</div>
+                                </div>
+                            </div>
+                            <div class="pt-2">
+                                <div class="w-full bg-purple-600/30 border border-purple-500 text-purple-200 py-2.5 rounded-xl text-center text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-camera"></i> Scanner un Code-Barres
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950 border-t border-slate-800 py-3 px-6 flex justify-between text-slate-500 text-xs">
+                            <div class="text-blue-500 flex flex-col items-center"><i class="fa-solid fa-chart-pie"></i><span class="text-[9px] mt-1">Bord</span></div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-box"></i><span class="text-[9px] mt-1">Stock</span></div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-clock-rotate-left"></i><span class="text-[9px] mt-1">Histo</span></div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-gear"></i><span class="text-[9px] mt-1">Param</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= MODALS (FENÊTRES POPUP) ================= -->
+    
+    <!-- Modal : Gestion des Fournisseurs -->
+    <div id="modal-fourn" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white text-slate-800 rounded-xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-bold text-lg text-[#9954bb]">👥 Gestion des Fournisseurs</h3>
+                <button onclick="closeModal('modal-fourn')" class="text-slate-400 hover:text-red-500 text-xl font-bold">&times;</button>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3 text-sm">
+                <input type="text" id="fourn-nom" placeholder="Entreprise (Ex: SINTRA)" class="border rounded px-3 py-1.5">
+                <input type="text" id="fourn-contact" placeholder="Nom du Contact" class="border rounded px-3 py-1.5">
+                <input type="text" id="fourn-tel" placeholder="Téléphone" class="border rounded px-3 py-1.5">
+            </div>
+            <button onclick="addFournisseur()" class="w-full bg-[#3fb618] hover:bg-[#349813] text-white font-bold py-2 rounded shadow text-sm mb-4 transition">
+                + Ajouter Fournisseur
+            </button>
+
+            <div class="border rounded max-h-56 overflow-y-auto">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-[#9954bb] text-white text-center">
+                            <th class="py-2 px-2">ID</th>
+                            <th class="py-2 px-2">Entreprise</th>
+                            <th class="py-2 px-2">Contact</th>
+                            <th class="py-2 px-2">Téléphone</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fourn-table-body" class="divide-y text-center"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal : Créer un article -->
+    <div id="modal-add" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white text-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-bold text-lg text-blue-600">➕ Créer un article</h3>
+                <button onclick="closeModal('modal-add')" class="text-slate-400 hover:text-red-500 text-xl font-bold">&times;</button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="font-bold block mb-1">SKU (Code-barres) :</label>
+                    <input type="text" id="add-sku" placeholder="Ex: 65489210" class="w-full border rounded px-3 py-1.5">
+                </div>
+                <div>
+                    <label class="font-bold block mb-1">Désignation (Nom du produit) :</label>
+                    <input type="text" id="add-des" placeholder="Ex: T-SHIRT COMFORT COLORS" class="w-full border rounded px-3 py-1.5">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-bold block mb-1">Catégorie :</label>
+                        <input type="text" id="add-cat" placeholder="Ex: VETEMENTS" class="w-full border rounded px-3 py-1.5">
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-1">Fournisseur :</label>
+                        <select id="add-fourn" class="w-full border rounded px-2 py-1.5 bg-white"></select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="font-bold block mb-1">Quantité :</label>
+                        <input type="number" id="add-qte" value="50" class="w-full border rounded px-3 py-1.5">
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-1 text-blue-600">Prix Achat :</label>
+                        <input type="number" step="0.01" id="add-prix" value="120.00" class="w-full border rounded px-3 py-1.5">
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-1">Seuil Alerte :</label>
+                        <input type="number" id="add-seuil" value="15" class="w-full border rounded px-3 py-1.5">
+                    </div>
+                </div>
+                <div>
+                    <label class="font-bold block mb-1">Photo du produit (Optionnel) :</label>
+                    <input type="file" id="add-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                </div>
+                <button onclick="saveNewArticle()" class="w-full bg-[#3fb618] hover:bg-[#349813] text-white font-bold py-2.5 rounded shadow mt-4 transition">
+                    Enregistrer dans le Stock
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal : Mouvement de Stock -->
+    <div id="modal-mouv" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white text-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 id="mouv-title" class="font-bold text-lg text-blue-600">Mouvement de Stock</h3>
+                <button onclick="closeModal('modal-mouv')" class="text-slate-400 hover:text-red-500 text-xl font-bold">&times;</button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div class="bg-blue-50 p-3 rounded border border-blue-200 font-bold text-blue-800" id="mouv-art-info">
+                    📦 Article : ---
+                </div>
+                <div>
+                    <label class="font-bold block mb-1">Quantité :</label>
+                    <input type="number" id="mouv-qte" value="10" min="1" class="w-full border rounded px-3 py-1.5">
+                </div>
+                <div id="mouv-in-fields">
+                    <label class="font-bold block mb-1 text-blue-600">Prix d'achat du nouveau lot :</label>
+                    <input type="number" step="0.01" id="mouv-prix-achat" class="w-full border rounded px-3 py-1.5">
+                    <p class="text-xs text-slate-500 italic mt-1">ℹ️ Le nouveau CUMP sera recalculé automatiquement.</p>
+                </div>
+                <div id="mouv-out-fields" class="hidden space-y-3">
+                    <div>
+                        <label class="font-bold block mb-1 text-emerald-600">Prix de Vente Unitaire :</label>
+                        <input type="number" step="0.01" id="mouv-prix-vente" class="w-full border rounded px-3 py-1.5">
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-1">Nom du Client (Facture) :</label>
+                        <input type="text" id="mouv-client" placeholder="Ex: Client Marrakech" class="w-full border rounded px-3 py-1.5">
+                    </div>
+                </div>
+                <button id="mouv-submit-btn" onclick="validateMovement()" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded shadow mt-4 transition">
+                    Valider
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= FONCTIONNALITÉS (MODULES) ================= -->
+    <section id="fonctionnalites" class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-14">
+            <h2 class="text-blue-500 font-semibold tracking-wide uppercase text-sm mb-2">Architecture & Fonctionnalités</h2>
+            <h3 class="text-3xl font-bold text-white">Pourquoi Apparelory ERP se démarque ?</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-cloud"></i></div>
+                <h4 class="text-lg font-bold text-white mb-2">Base de données Cloud (Supabase)</h4>
+                <p class="text-slate-400 text-sm">Fini les fichiers locaux isolés. Toutes les données sont synchronisées en temps réel sur un serveur PostgreSQL sécurisé.</p>
+            </div>
+            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-scale-balanced"></i></div>
+                <h4 class="text-lg font-bold text-white mb-2">Méthode CUMP Intégrée</h4>
+                <p class="text-slate-400 text-sm">Calcul mathématique exact du Coût Unitaire Moyen Pondéré à chaque réapprovisionnement pour une comptabilité juste.</p>
+            </div>
+            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-2xl">
+                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-language"></i></div>
+                <h4 class="text-lg font-bold text-white mb-2">Multilingue & Multi-Devises</h4>
+                <p class="text-slate-400 text-sm">Changement à la volée entre Français, Anglais et Arabe, ainsi que les devises (DH, €, $) sans redémarrer le programme.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SECTION CRÉATEUR (NOUREDDINE BOUKESTANE) ================= -->
+    <section id="auteur" class="py-16 px-4 max-w-4xl mx-auto text-center">
+        <div class="bg-gradient-to-b from-slate-800 to-slate-900 p-8 md:p-10 rounded-3xl border border-slate-700 shadow-xl">
+            <div class="w-20 h-20 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl font-extrabold text-white mb-4 shadow-lg shadow-blue-500/30">
+                NB
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Développé par Noureddine Boukestane</h2>
+            <p class="text-blue-400 text-sm md:text-base font-medium mb-4">Spécialiste en Logistique, Supply Chain Management & Développement ERP</p>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-6 text-sm leading-relaxed">
+                Titulaire d'une Licence en Logistique et Supply Chain Management (FSJES - Université Cadi Ayyad Marrakech). Ce projet allie la maîtrise des concepts logistiques (gestion des approvisionnements, méthode CUMP, seuils de sécurité) à l'automatisation informatique moderne.
+            </p>
+        </div>
+    </section>
+
+    <footer class="py-6 text-center text-slate-500 text-xs border-t border-slate-800">
+        <p>© 2026 Apparelory ERP - Créé par <strong>Noureddine Boukestane</strong> (Marrakech, Maroc).</p>
+    </footer>
+
+    <!-- ================= LOGIQUE JAVASCRIPT COMPLÈTE ================= -->
+    <script>
+        // 1. Base de données Fournisseurs
+        let fournisseurs = [
+            { id: 1, nom: "AKWA", contact: "Karim Bennani", tel: "0522-458912" },
+            { id: 2, nom: "SONDA", contact: "Youssef Alami", tel: "0524-331122" },
+            { id: 3, nom: "SINTRA", contact: "Nadia Tazi", tel: "0661-987654" },
+            { id: 4, nom: "EXCEM", contact: "Omar Idrissi", tel: "0522-998877" },
+            { id: 5, nom: "SDM", contact: "Rachid Chraibi", tel: "0662-112233" },
+            { id: 6, nom: "OPS", contact: "Hassan Berrada", tel: "0537-445566" },
+            { id: 7, nom: "KARAM", contact: "Mehdi Fassi", tel: "0524-887766" }
+        ];
+
+        // 2. Base de données Articles
+        let articles = [
+            { sku: "5188158418", des: "SALIM", cat: "BOISSONS", fourn: "AKWA", qte: 100, cump: 4.45, seuil: 20, date: "2026-10-09 00:45", img: "🥤" },
+            { sku: "8545418441", des: "COCA COLA", cat: "BOISSONS", fourn: "SONDA", qte: 90, cump: 5.50, seuil: 20, date: "2026-10-09 00:46", img: "🥫" },
+            { sku: "8448484844", des: "CAFE SOLUBLE", cat: "CAFE", fourn: "SINTRA", qte: 40, cump: 300.00, seuil: 10, date: "2026-10-09 00:47", img: "☕" },
+            { sku: "544845544", des: "PC HP", cat: "ELECTRONIQUE", fourn: "EXCEM", qte: 40, cump: 1900.00, seuil: 15, date: "2026-10-09 00:51", img: "💻" },
+            { sku: "5252545664", des: "CLAVIER", cat: "ELECTRONIQUE", fourn: "EXCEM", qte: 12, cump: 100.00, seuil: 15, date: "2026-10-09 00:52", img: "⌨️" },
+            { sku: "64484849844", des: "MILKA", cat: "CHOCOLA", fourn: "SDM", qte: 150, cump: 8.00, seuil: 30, date: "2026-10-09 00:55", img: "🍫" },
+            { sku: "57478484874", des: "IPHONE", cat: "ELECTRONIQUE", fourn: "OPS", qte: 10, cump: 9500.00, seuil: 15, date: "2026-10-09 01:03", img: "📱" },
+            { sku: "5451515", des: "PC DELL", cat: "INFORMATIQUE", fourn: "KARAM", qte: 80, cump: 2500.00, seuil: 10, date: "2026-10-10 15:35", img: "🖥️" }
+        ];
+
+        // 3. Historique des mouvements
+        let historique = [
+            { date: "2026-01-10", sku: "5188158418", type: "ENTREE", qte: 120, pa: 4.45, pv: 0 },
+            { date: "2026-02-14", sku: "5188158418", type: "VENTE", qte: 50, pa: 4.45, pv: 7.00 },
+            { date: "2026-03-05", sku: "8545418441", type: "ENTREE", qte: 150, pa: 5.50, pv: 0 },
+            { date: "2026-04-18", sku: "8545418441", type: "VENTE", qte: 60, pa: 5.50, pv: 8.50 },
+            { date: "2026-05-20", sku: "8448484844", type: "ENTREE", qte: 60, pa: 300.00, pv: 0 },
+            { date: "2026-06-11", sku: "8448484844", type: "VENTE", qte: 20, pa: 300.00, pv: 420.00 },
+            { date: "2026-07-08", sku: "544845544", type: "ENTREE", qte: 55, pa: 1900.00, pv: 0 },
+            { date: "2026-08-22", sku: "544845544", type: "VENTE", qte: 15, pa: 1900.00, pv: 2600.00 },
+            { date: "2026-09-15", sku: "57478484874", type: "ENTREE", qte: 25, pa: 9500.00, pv: 0 },
+            { date: "2026-09-25", sku: "57478484874", type: "VENTE", qte: 15, pa: 9500.00, pv: 11500.00 },
+            { date: "2026-10-03", sku: "5451515", type: "ENTREE", qte: 100, pa: 2500.00, pv: 0 },
+            { date: "2026-10-09", sku: "5451515", type: "VENTE", qte: 20, pa: 2500.00, pv: 3200.00 },
+            { date: "2026-10-12", sku: "64484849844", type: "ENTREE", qte: 200, pa: 8.00, pv: 0 },
+            { date: "2026-10-14", sku: "64484849844", type: "VENTE", qte: 50, pa: 8.00, pv: 13.00 },
+            { date: "2025-03-10", sku: "544845544", type: "ENTREE", qte: 40, pa: 1850.00, pv: 0 },
+            { date: "2025-06-15", sku: "544845544", type: "VENTE", qte: 30, pa: 1850.00, pv: 2500.00 },
+            { date: "2025-11-20", sku: "5188158418", type: "VENTE", qte: 90, pa: 4.20, pv: 6.50 }
+        ];
+
+        let selectedSku = null;
+        let currentMouvType = 'plus';
+        let CURR = 'DH';
+        let LANG = 'fr';
+        let chartMouvInstance = null;
+        let chartFinInstance = null;
+
+        const TR = {
+            fr: {
+                tab_stock: "Gestion du Magasin", tab_dash: "Dashboard Analytique", tab_settings: "Paramètres",
+                add_art: "Créer un article", fourn: "Fournisseurs", search: "🔍 Rechercher :",
+                btn_in: "Entrée", btn_out: "Sortie (Vente)", btn_export: "Exporter Suivi Commandes",
+                photo: "Photo", sku: "SKU", des: "Désignation", cat: "Catégorie", fourn_col: "Fournisseur", qte: "Quantité", prix: "Prix Moyen (CUMP)", seuil: "Seuil", date: "Date d'ajout"
+            },
+            en: {
+                tab_stock: "Store Management", tab_dash: "Analytics Dashboard", tab_settings: "Settings",
+                add_art: "Add Item", fourn: "Suppliers", search: "🔍 Search:",
+                btn_in: "Stock IN", btn_out: "Sale (OUT)", btn_export: "Export Orders History",
+                photo: "Photo", sku: "SKU", des: "Designation", cat: "Category", fourn_col: "Supplier", qte: "Quantity", prix: "Avg Price (CUMP)", seuil: "Threshold", date: "Date Added"
+            },
+            ar: {
+                tab_stock: "إدارة المخزون", tab_dash: "لوحة القيادة", tab_settings: "الإعدادات",
+                add_art: "إضافة منتج", fourn: "الموردين", search: "🔍 بحث:",
+                btn_in: "إدخال سلع", btn_out: "بيع (إخراج)", btn_export: "استخراج سجل الطلبيات",
+                photo: "صورة", sku: "الرمز", des: "الاسم", cat: "الفئة", fourn_col: "المورد", qte: "الكمية", prix: "متوسط السعر", seuil: "الحد الأدنى", date: "تاريخ الإضافة"
+            }
+        };
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            tbody.innerHTML = '';
+
+            articles.forEach(art => {
+                if (search && !art.sku.toLowerCase().includes(search) && !art.des.toLowerCase().includes(search) && !art.cat.toLowerCase().includes(search)) return;
+
+                const isAlert = art.qte <= art.seuil;
+                const isSelected = art.sku === selectedSku;
+                
+                const tr = document.createElement('tr');
+                tr.className = `cursor-pointer transition ${isSelected ? 'ring-2 ring-inset ring-blue-600 bg-blue-50/80' : (isAlert ? 'bg-[#f8d7da] text-[#721c24] hover:bg-red-200' : 'hover:bg-slate-100')}`;
+                tr.onclick = () => selectRow(art.sku);
+
+                let imgHtml = `<div class="w-10 h-10 rounded bg-slate-200 mx-auto flex items-center justify-center text-xl shadow-sm">${art.img}</div>`;
+                if (art.img.startsWith('data:image')) {
+                    imgHtml = `<img src="${art.img}" class="w-10 h-10 rounded object-cover mx-auto shadow-sm border border-slate-300">`;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-2 px-3">${imgHtml}</td>
+                    <td class="py-2 px-3 font-mono font-semibold">${art.sku}</td>
+                    <td class="py-2 px-3 font-bold">${art.des}</td>
+                    <td class="py-2 px-3">${art.cat}</td>
+                    <td class="py-2 px-3">${art.fourn}</td>
+                    <td class="py-2 px-3 font-extrabold ${isAlert ? 'text-red-700' : 'text-slate-800'}">${art.qte}</td>
+                    <td class="py-2 px-3 font-semibold">${art.cump.toFixed(2)} ${CURR}</td>
+                    <td class="py-2 px-3">${art.seuil}</td>
+                    <td class="py-2 px-3 text-xs opacity-80">${art.date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            updateKPIs();
+            populateDashboardProductFilter();
+        }
+
+        function selectRow(sku) {
+            selectedSku = sku;
+            const art = articles.find(a => a.sku === sku);
+            document.getElementById('selected-indicator').innerText = art ? `Article sélectionné : ${art.des} (${art.sku})` : `Article sélectionné : Aucun`;
+            renderTable();
+        }
+
+        function switchTab(tab) {
+            ['stock', 'dash', 'settings'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).className = "px-4 py-2.5 text-sm font-bold rounded-t-lg bg-slate-200 text-slate-700 hover:bg-slate-300 flex items-center gap-2 transition";
+            });
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tab}`).className = "px-4 py-2.5 text-sm font-bold rounded-t-lg bg-blue-600 text-white flex items-center gap-2 transition";
+            document.getElementById('bottom-actions').style.display = (tab === 'stock') ? 'flex' : 'none';
+
+            if (tab === 'dash') {
+                updateKPIs();
+                populateDashboardProductFilter();
+                renderCharts();
+            }
+        }
+
+        function updateKPIs() {
+            document.getElementById('kpi-refs').innerText = articles.length;
+            document.getElementById('kpi-pieces').innerText = articles.reduce((sum, a) => sum + a.qte, 0);
+            document.getElementById('kpi-alerte').innerText = articles.filter(a => a.qte <= a.seuil).length;
+            const valeur = articles.reduce((sum, a) => sum + (a.qte * a.cump), 0);
+            document.getElementById('kpi-valeur').innerText = `${valeur.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${CURR}`;
+        }
+
+        function populateDashboardProductFilter() {
+            const selectProd = document.getElementById('dash-produit');
+            const currentVal = selectProd.value;
+            selectProd.innerHTML = `<option value="Tous les produits">Tous les produits</option>`;
+            articles.forEach(a => {
+                const opt = document.createElement('option');
+                opt.value = a.sku;
+                opt.innerText = `${a.sku} - ${a.des}`;
+                selectProd.appendChild(opt);
+            });
+            if ([...selectProd.options].some(o => o.value === currentVal)) {
+                selectProd.value = currentVal;
+            }
+        }
+
+        function renderCharts() {
+            const annee = document.getElementById('dash-annee').value;
+            const mois = document.getElementById('dash-mois').value;
+            const prodSku = document.getElementById('dash-produit').value;
+
+            let keys = [];
+            let labels = [];
+
+            if (mois === "Tous les mois") {
+                keys = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+                labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+            } else {
+                for (let i = 1; i <= 31; i++) {
+                    const d = i < 10 ? `0${i}` : `${i}`;
+                    keys.push(d);
+                    labels.push(d);
+                }
+            }
+
+            let entreesDict = {};
+            let ventesDict = {};
+            let caDict = {};
+            let coutDict = {};
+            keys.forEach(k => { entreesDict[k] = 0; ventesDict[k] = 0; caDict[k] = 0; coutDict[k] = 0; });
+
+            historique.forEach(h => {
+                const hAnnee = h.date.slice(0, 4);
+                const hMois = h.date.slice(5, 7);
+                const hJour = h.date.slice(8, 10);
+
+                if (hAnnee !== annee) return;
+                if (mois !== "Tous les mois" && hMois !== mois) return;
+                if (prodSku !== "Tous les produits" && h.sku !== prodSku) return;
+
+                const periodeKey = (mois === "Tous les mois") ? hMois : hJour;
+                if (entreesDict[periodeKey] !== undefined) {
+                    if (h.type === "ENTREE") {
+                        entreesDict[periodeKey] += h.qte;
+                        coutDict[periodeKey] += (h.qte * h.pa);
+                    } else if (h.type === "VENTE") {
+                        ventesDict[periodeKey] += h.qte;
+                        caDict[periodeKey] += (h.qte * h.pv);
+                        coutDict[periodeKey] += (h.qte * h.pa);
+                    }
+                }
+            });
+
+            const dataEntrees = keys.map(k => entreesDict[k]);
+            const dataVentes = keys.map(k => ventesDict[k]);
+            const dataCA = keys.map(k => caDict[k]);
+            const dataCout = keys.map(k => coutDict[k]);
+
+            const prodObj = articles.find(a => a.sku === prodSku);
+            const suffixTitre = (prodSku === "Tous les produits") ? "Globales" : `de ${prodObj ? prodObj.des : prodSku}`;
+            document.getElementById('chart1-title').innerText = `Mouvements Pièces (${suffixTitre} - ${annee})`;
+            document.getElementById('chart2-title').innerText = `Finances ${suffixTitre} (${CURR})`;
+
+            const ctx1 = document.getElementById('chartMouvements').getContext('2d');
+            const ctx2 = document.getElementById('chartFinances').getContext('2d');
+            if (chartMouvInstance) chartMouvInstance.destroy();
+            if (chartFinInstance) chartFinInstance.destroy();
+
+            chartMouvInstance = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Entrées (Pièces)', data: dataEntrees, backgroundColor: '#2780e3' },
+                        { label: 'Ventes (Pièces)', data: dataVentes, backgroundColor: '#8e44ad' }
+                    ]
+                }
+            });
+
+            chartFinInstance = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: `Revenus Ventes (${CURR})`, data: dataCA, backgroundColor: '#3fb618' },
+                        { label: `Coûts d'Achat (${CURR})`, data: dataCout, backgroundColor: '#ff0039' }
+                    ]
+                }
+            });
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
+
+        function openFournisseursModal() {
+            renderFournisseursTable();
+            openModal('modal-fourn');
+        }
+
+        function renderFournisseursTable() {
+            const tbody = document.getElementById('fourn-table-body');
+            tbody.innerHTML = '';
+            fournisseurs.forEach(f => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-1.5 px-2 font-mono">${f.id}</td>
+                        <td class="py-1.5 px-2 font-bold text-purple-700">${f.nom}</td>
+                        <td class="py-1.5 px-2">${f.contact}</td>
+                        <td class="py-1.5 px-2">${f.tel}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addFournisseur() {
+            const nom = document.getElementById('fourn-nom').value.trim().toUpperCase();
+            const contact = document.getElementById('fourn-contact').value.trim() || '-';
+            const tel = document.getElementById('fourn-tel').value.trim() || '-';
+            if (!nom) return alert("Veuillez saisir le nom de l'entreprise !");
+
+            const newId = fournisseurs.length + 1;
+            fournisseurs.push({ id: newId, nom, contact, tel });
+            document.getElementById('fourn-nom').value = '';
+            document.getElementById('fourn-contact').value = '';
+            document.getElementById('fourn-tel').value = '';
+            renderFournisseursTable();
+        }
+
+        function openAddArticleModal() {
+            const selectFourn = document.getElementById('add-fourn');
+            selectFourn.innerHTML = '';
+            fournisseurs.forEach(f => {
+                selectFourn.innerHTML += `<option value="${f.nom}">${f.nom} (ID:${f.id})</option>`;
+            });
+            openModal('modal-add');
+        }
+
+        function saveNewArticle() {
+            const sku = document.getElementById('add-sku').value.trim();
+            const des = document.getElementById('add-des').value.trim().toUpperCase();
+            const cat = document.getElementById('add-cat').value.trim().toUpperCase() || 'GENERAL';
+            const fourn = document.getElementById('add-fourn').value || 'INTERNE';
+            const qte = parseInt(document.getElementById('add-qte').value) || 0;
+            const prix = parseFloat(document.getElementById('add-prix').value) || 0;
+            const seuil = parseInt(document.getElementById('add-seuil').value) || 10;
+            const fileInput = document.getElementById('add-photo');
+
+            if (!sku || !des) return alert("Veuillez remplir le SKU et la Désignation !");
+            if (articles.some(a => a.sku === sku)) return alert("Ce SKU existe déjà !");
+
+            const now = "2026-10-14 12:00";
+            const insertArt = (imgSource) => {
+                articles.unshift({ sku, des, cat, fourn, qte, cump: prix, seuil, date: now, img: imgSource });
+                if (qte > 0) {
+                    historique.push({ date: "2026-10-14", sku: sku, type: "ENTREE", qte: qte, pa: prix, pv: 0 });
+                }
+                selectedSku = sku;
+                renderTable();
+                closeModal('modal-add');
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => insertArt(e.target.result);
+                reader.readAsDataURL(fileInput.files[0]);
+            } else { insertArt("📦"); }
+        }
+
+        function openMouvModal(type) {
+            if (!selectedSku) return alert("⚠️ Sélectionnez d'abord un article dans le tableau !");
+            currentMouvType = type;
+            const art = articles.find(a => a.sku === selectedSku);
+            document.getElementById('mouv-art-info').innerText = `📦 ${art.des} (Stock actuel : ${art.qte})`;
+            document.getElementById('mouv-prix-achat').value = art.cump;
+            document.getElementById('mouv-prix-vente').value = (art.cump * 1.3).toFixed(2);
+
+            if (type === 'plus') {
+                document.getElementById('mouv-title').innerText = "➕ Entrée de Stock";
+                document.getElementById('mouv-in-fields').classList.remove('hidden');
+                document.getElementById('mouv-out-fields').classList.add('hidden');
+                document.getElementById('mouv-submit-btn').className = "w-full bg-[#2780e3] hover:bg-blue-700 text-white font-bold py-2.5 rounded shadow mt-4 transition";
+            } else {
+                document.getElementById('mouv-title').innerText = "➖ Sortie (Vente)";
+                document.getElementById('mouv-in-fields').classList.add('hidden');
+                document.getElementById('mouv-out-fields').classList.remove('hidden');
+                document.getElementById('mouv-submit-btn').className = "w-full bg-[#ff7518] hover:bg-orange-600 text-white font-bold py-2.5 rounded shadow mt-4 transition";
+            }
+            openModal('modal-mouv');
+        }
+
+        function validateMovement() {
+            const art = articles.find(a => a.sku === selectedSku);
+            const qteMouv = parseInt(document.getElementById('mouv-qte').value) || 0;
+            if (qteMouv <= 0) return alert("Quantité invalide !");
+
+            if (currentMouvType === 'plus') {
+                const prixLot = parseFloat(document.getElementById('mouv-prix-achat').value) || art.cump;
+                const nouvelleQte = art.qte + qteMouv;
+                art.cump = ((art.qte * art.cump) + (qteMouv * prixLot)) / nouvelleQte;
+                art.qte = nouvelleQte;
+                historique.push({ date: "2026-10-14", sku: art.sku, type: "ENTREE", qte: qteMouv, pa: prixLot, pv: 0 });
+            } else {
+                if (qteMouv > art.qte) return alert("⚠️ Stock insuffisant !");
+                art.qte -= qteMouv;
+                const client = document.getElementById('mouv-client').value || 'Client Comptoir';
+                const prixV = parseFloat(document.getElementById('mouv-prix-vente').value) || 0;
+                historique.push({ date: "2026-10-14", sku: art.sku, type: "VENTE", qte: qteMouv, pa: art.cump, pv: prixV });
+                alert(`✅ Vente enregistrée !\n\nClient : ${client}\nArticle : ${art.des}\nQuantité : ${qteMouv}\nTotal Facture : ${(qteMouv * prixV).toFixed(2)} ${CURR}`);
+            }
+            renderTable();
+            closeModal('modal-mouv');
+        }
+
+        function applySettings() {
+            LANG = document.getElementById('select-lang').value;
+            CURR = document.getElementById('select-curr').value;
+            const t = TR[LANG];
+            document.getElementById('lbl-tab-stock').innerText = t.tab_stock;
+            document.getElementById('lbl-tab-dash').innerText = t.tab_dash;
+            document.getElementById('lbl-tab-settings').innerText = t.tab_settings;
+            document.getElementById('btn-add-art').innerText = t.add_art;
+            document.getElementById('btn-fourn').innerText = t.fourn;
+            document.getElementById('lbl-search').innerText = t.search;
+            document.getElementById('btn-in').innerText = t.btn_in;
+            document.getElementById('btn-out').innerText = t.btn_out;
+            document.getElementById('btn-export').innerText = t.btn_export;
+            document.getElementById('th-photo').innerText = t.photo;
+            document.getElementById('th-sku').innerText = t.sku;
+            document.getElementById('th-des').innerText = t.des;
+            document.getElementById('th-cat').innerText = t.cat;
+            document.getElementById('th-fourn').innerText = t.fourn_col;
+            document.getElementById('th-qte').innerText = t.qte;
+            document.getElementById('th-prix').innerText = t.prix;
+            document.getElementById('th-seuil').innerText = t.seuil;
+            document.getElementById('th-date').innerText = t.date;
+            renderTable();
+            alert("🔄 Paramètres appliqués !");
+        }
+
+        function exportCSV() {
+            let csv = "SKU;Designation;Categorie;Fournisseur;Quantite;CUMP;Seuil\n";
+            articles.forEach(a => { csv += `${a.sku};${a.des};${a.cat};${a.fourn};${a.qte};${a.cump.toFixed(2)};${a.seuil}\n`; });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Export_Stock_Apparelory.csv";
+            link.click();
+        }
+
+        window.onload = () => { selectRow("5188158418"); };
+    </script>
+</body>
+</html>
