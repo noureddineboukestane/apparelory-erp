@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back-Office Enterprise | Apparelory ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        body { font-family: 'Open Sans', sans-serif; background-color: #f4f6f9; }
+        .sidebar { background-color: #343a40; color: #c2c7d0; }
+        .nav-item { padding: 9px 15px; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; font-size: 13px; user-select: none; }
+        .nav-item:hover, .nav-item.active { background-color: #494e53; color: #ffffff; border-left-color: #007bff; }
+        
+        .submenu { display: none; background-color: #272c30; border-left: 3px solid #007bff; }
+        .submenu.open { display: block; }
+        .sub-item { padding: 7px 15px 7px 38px; cursor: pointer; transition: all 0.15s; font-size: 12.5px; color: #adb5bd; display: flex; align-items: center; gap: 8px; user-select: none; }
+        .sub-item:hover, .sub-item.active { background-color: #3d4246; color: #ffffff; font-weight: 600; }
+        
+        .nav-header { font-size: 11px; text-transform: uppercase; color: #8a909d; margin: 15px 15px 5px 15px; letter-spacing: 1px; font-weight: 700; border-top: 1px solid #4b545c; padding-top: 15px; text-align: center; }
+        .nav-header:first-child { border-top: none; padding-top: 5px; }
+        .text-rupture { color: #ff4d4d !important; font-weight: 600; }
+        .text-rupture:hover { background-color: rgba(255, 77, 77, 0.12) !important; }
+        
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #343a40; }
+        ::-webkit-scrollbar-thumb { background: #6c757d; border-radius: 4px; }
+        
+        .view-section { display: none; animation: fadeIn 0.25s ease-in-out; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden text-sm">
+
+    <!-- ================= ÉCRAN DE CONNEXION (LOGIN PORTAL) ================= -->
+    <div id="login-screen" class="fixed inset-0 bg-[#1e2226] z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden border border-gray-700">
+            <div class="bg-[#2d3238] p-6 text-center border-b border-gray-700">
+                <div class="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center font-bold font-serif text-2xl mx-auto mb-3 shadow">A</div>
+                <h1 class="text-white font-bold tracking-widest text-xl">APPARELORY ERP</h1>
+                <p class="text-gray-400 text-xs mt-1">Portail Back-Office Multi-Branches</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="p-6 space-y-4">
+                <div id="login-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 text-xs font-semibold">
+                    Email ou mot de passe incorrect !
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Adresse Email Professionnelle</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" id="login-email" value="nour@apparelory.com" required class="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-blue-600 font-medium">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Mot de passe</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="login-pass" value="admin2026" required class="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded focus:outline-none focus:border-blue-600 font-medium">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded shadow transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Connexion au Back-Office
+                </button>
+                <div class="bg-gray-50 p-3 rounded border border-gray-200 text-[11px] text-gray-500 flex justify-between items-center">
+                    <span><strong>Accès Admin :</strong> nour@apparelory.com</span>
+                    <span><strong>Pass :</strong> admin2026</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar w-[265px] h-full flex flex-col shrink-0 shadow-xl z-20 overflow-y-auto">
+        <div class="h-[60px] flex items-center justify-center border-b border-gray-600/50 bg-[#2d3238] gap-3 shrink-0">
+            <div class="w-8 h-8 bg-white text-black rounded-full flex items-center justify-center font-bold font-serif text-lg shadow">A</div>
+            <span class="text-white font-bold tracking-widest text-lg">APPARELORY</span>
+        </div>
+
+        <div class="py-2 flex-1 pb-12">
+            <div class="nav-header flex items-center justify-center gap-2">
+                <span class="w-5 h-[1px] bg-gray-500"></span> TABLEAU DE BORD <span class="w-5 h-[1px] bg-gray-500"></span>
+            </div>
+
+            <div class="nav-item active flex items-center gap-3" onclick="navigate('dashboard', this)">
+                <i class="fa-solid fa-gauge-high w-5 text-center"></i> <span>Tableau de Bord</span>
+            </div>
+
+            <div class="nav-header flex items-center justify-center gap-2">
+                <span class="w-6 h-[1px] bg-gray-500"></span> CONTENU <span class="w-6 h-[1px] bg-gray-500"></span>
+            </div>
+            
+            <!-- COMMANDES -->
+            <div>
+                <div class="nav-item flex items-center justify-between" onclick="toggleMenu('sub-cmd', this)">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-shopping-cart w-5 text-center"></i> <span>Commandes</span></div>
+                    <i class="fa-solid fa-caret-left text-[11px] transition-transform duration-200"></i>
+                </div>
+                <div id="sub-cmd" class="submenu">
+                    <div class="sub-item" onclick="filterOrders('ALL', this)"><i class="fa-solid fa-list text-[10px]"></i> Toutes les commandes</div>
+                    <div class="sub-item" onclick="filterOrders('EN INSTANCE', this)"><i class="fa-solid fa-clock text-[10px] text-orange-400"></i> Commandes en instance</div>
+                    <div class="sub-item" onclick="filterOrders('EN TRAITEMENT', this)"><i class="fa-solid fa-spinner text-[10px] text-blue-400"></i> En traitement</div>
+                    <div class="sub-item" onclick="filterOrders('EXPÉDIÉE', this)"><i class="fa-solid fa-check text-[10px] text-green-400"></i> Commandes livrées</div>
+                </div>
+            </div>
+
+            <!-- MESSAGERIE -->
+            <div>
+                <div class="nav-item flex items-center justify-between" onclick="toggleMenu('sub-msg', this)">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-envelope w-5 text-center"></i> <span>Messagerie</span></div>
+                    <i class="fa-solid fa-caret-left text-[11px] transition-transform duration-200"></i>
+                </div>
+                <div id="sub-msg" class="submenu">
+                    <div class="sub-item" onclick="navigate('messagerie', this)"><i class="fa-solid fa-inbox text-[10px]"></i> Boîte de réception (3)</div>
+                    <div class="sub-item" onclick="navigate('messagerie', this)"><i class="fa-solid fa-paper-plane text-[10px]"></i> Messages envoyés</div>
+                </div>
+            </div>
+
+            <!-- SAV -->
+            <div>
+                <div class="nav-item flex items-center justify-between" onclick="toggleMenu('sub-sav', this)">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-headset w-5 text-center"></i> <span>SAV</span></div>
+                    <i class="fa-solid fa-caret-left text-[11px] transition-transform duration-200"></i>
+                </div>
+                <div id="sub-sav" class="submenu">
+                    <div class="sub-item" onclick="navigate('sav', this)"><i class="fa-solid fa-ticket text-[10px]"></i> Tickets ouverts</div>
+                    <div class="sub-item" onclick="navigate('sav', this)"><i class="fa-solid fa-rotate-left text-[10px]"></i> Retours & Échanges</div>
+                </div>
+            </div>
+
+            <!-- CLIENTS -->
+            <div>
+                <div class="nav-item flex items-center justify-between" onclick="toggleMenu('sub-cli', this)">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-users w-5 text-center"></i> <span>Clients</span></div>
+                    <i class="fa-solid fa-caret-left text-[11px] transition-transform duration-200"></i>
+                </div>
+                <div id="sub-cli" class="submenu">
+                    <div class="sub-item" onclick="navigate('clients', this)"><i class="fa-solid fa-address-book text-[10px]"></i> Base Clients</div>
+                    <div class="sub-item" onclick="navigate('clients', this)"><i class="fa-solid fa-crown text-[10px] text-yellow-400"></i> Comptes B2B & VIP</div>
+                </div>
+            </div>
+
+            <!-- CATALOGUE -->
+            <div>
+                <div class="nav-item flex items-center justify-between" onclick="toggleMenu('sub-cat', this)">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-book-open w-5 text-center"></i> <span>Catalogue</span></div>
+                    <i class="fa-solid fa-caret-left text-[11px] transition-transform duration-200"></i>
+                </div>
+                <div id="sub-cat" class="submenu">
+                    <div class="sub-item" onclick="navigate('catalogue', this)"><i class="fa-solid fa-shirt text-[10px]"></i> Produits en ligne</div>
+                    <div class="sub-item" onclick="navigate('catalogue', this)"><i class="fa-solid fa-tags text-[10px]"></i> Rubriques & Collections</div>
+                </div>
+            </div>
+
+            <!-- MARKETING -->
+            <div>
+                <div class="nav-item flex items-center justify-between" onclick="toggleMenu('sub-mkt', this)">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-bullhorn w-5 text-center"></i> <span>Marketing</span></div>
+                    <i class="fa-solid fa-caret-left text-[11px] transition-transform duration-200"></i>
+                </div>
+                <div id="sub-mkt" class="submenu">
+                    <div class="sub-item" onclick="navigate('marketing', this)"><i class="fa-solid fa-percent text-[10px]"></i> Codes Promos</div>
+                    <div class="sub-item" onclick="navigate('marketing', this)"><i class="fa-solid fa-chart-line text-[10px]"></i> Campagnes Ads</div>
+                </div>
+            </div>
+
+            <!-- STOCK & ACHAT -->
+            <div>
+                <div class="nav-item flex items-center justify-between bg-[#494e53] text-white mt-1" onclick="toggleMenu('sub-stock', this)">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-boxes-stacked w-5 text-center"></i> <span class="font-semibold">Stock & Achat</span></div>
+                    <i class="fa-solid fa-caret-down text-[11px] transition-transform duration-200"></i>
+                </div>
+                <div id="sub-stock" class="submenu open">
+                    <div class="sub-item" onclick="navigate('fournisseurs', this)"><i class="fa-solid fa-id-card w-4"></i> Fournisseurs</div>
+                    <div class="sub-item" onclick="navigate('entree-stock', this)"><i class="fa-solid fa-arrow-right-to-bracket w-4"></i> Entrée de stock</div>
+                    <div class="sub-item" onclick="navigate('sortie-stock', this)"><i class="fa-solid fa-arrow-right-from-bracket w-4"></i> Sortie de Stock</div>
+                    <div class="sub-item" onclick="navigate('etat-stock', this)"><i class="fa-solid fa-cubes w-4"></i> Etat des stocks</div>
+                    <div class="sub-item" onclick="navigate('achats-encours', this)"><i class="fa-solid fa-cart-arrow-down w-4"></i> Achats en cours</div>
+                    <div class="sub-item" onclick="navigate('achats-chine', this)"><i class="fa-solid fa-ship w-4"></i> Achats container</div>
+                    <div class="sub-item" onclick="navigate('generateur-container', this)"><i class="fa-solid fa-calculator w-4"></i> Générateur de container</div>
+                    <div class="sub-item text-rupture" onclick="navigate('rupture', this)"><i class="fa-solid fa-triangle-exclamation w-4"></i> Rupture stock prévisionnel</div>
+                    <div class="sub-item" onclick="navigate('autres-achats', this)"><i class="fa-solid fa-boxes-packing w-4"></i> Autres achats gros</div>
+                    <div class="sub-item" onclick="navigate('emplacements', this)"><i class="fa-solid fa-warehouse w-4"></i> Gestion des emplacements</div>
+                    <div class="sub-item" onclick="navigate('etiquette', this)"><i class="fa-solid fa-barcode w-4"></i> Etiquette</div>
+                </div>
+            </div>
+
+            <!-- ADMINISTRATION & ACCÈS UTILISATEURS -->
+            <div class="nav-header flex items-center justify-center gap-2">
+                <span class="w-4 h-[1px] bg-gray-500"></span> SÉCURITÉ & ACCÈS <span class="w-4 h-[1px] bg-gray-500"></span>
+            </div>
+            <div class="nav-item flex items-center gap-3 text-blue-300 font-semibold" onclick="navigate('users', this)">
+                <i class="fa-solid fa-user-shield w-5 text-center"></i> <span>Gestion des Accès (Users)</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main class="flex-1 flex flex-col h-full bg-white relative">
+        
+        <!-- TOPBAR WITH BRANCH SELECTOR & USER INFO -->
+        <header class="h-[60px] bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-10 shadow-sm">
+            <div class="flex items-center gap-4">
+                <i class="fa-solid fa-bars text-gray-500 cursor-pointer hover:text-black"></i>
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="Rechercher SKU, commande, client..." class="pl-9 pr-4 py-1.5 bg-gray-100 border-none rounded text-sm w-[280px] focus:outline-none focus:ring-1 focus:ring-blue-500">
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- SÉLECTEUR DE BRANCHES -->
+                <div class="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded border border-gray-200">
+                    <i class="fa-solid fa-code-branch text-blue-600"></i>
+                    <span class="text-xs font-bold text-gray-600">Branche :</span>
+                    <select id="branch-selector" onchange="changerBranche(this.value)" class="bg-transparent font-bold text-blue-700 outline-none cursor-pointer">
+                        <option value="Siège Sidi Ghanem">Siège Sidi Ghanem (Marrakech)</option>
+                        <option value="Showroom Gueliz">Showroom Gueliz (Marrakech)</option>
+                        <option value="Dépôt Casablanca">Dépôt Casablanca (Aïn Sebaâ)</option>
+                    </select>
+                </div>
+
+                <div class="relative cursor-pointer" onclick="navigate('rupture')">
+                    <i class="fa-regular fa-bell text-gray-600 text-lg"></i>
+                    <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">2</span>
+                </div>
+
+                <!-- PROFIL CONNECTÉ + DÉCONNEXION -->
+                <div class="flex items-center gap-2 pl-3 border-l border-gray-200">
+                    <div class="text-right">
+                        <div id="top-user-name" class="text-xs font-bold text-gray-800">Noureddine B.</div>
+                        <div id="top-user-role" class="text-[10px] text-green-600 font-semibold">Super Admin</div>
+                    </div>
+                    <button onclick="logout()" class="ml-2 bg-red-50 hover:bg-red-100 text-red-600 px-2.5 py-1.5 rounded text-xs font-bold transition" title="Se déconnecter">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- DYNAMIC VIEWS CONTAINER -->
+        <div class="flex-1 overflow-y-auto p-6 bg-[#f4f6f9]">
+            
+            <!-- 1. TABLEAU DE BORD -->
+            <section id="view-dashboard" class="view-section active">
+                <div class="text-gray-500 text-xs mb-4">Accueil / <span class="font-semibold text-gray-700">Tableau de Bord (<span id="current-branch-label">Siège Sidi Ghanem</span>)</span></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm border-l-4 border-l-blue-600">
+                        <div class="text-xs text-gray-500 font-semibold uppercase">Chiffre d'affaires</div>
+                        <div id="kpi-ca" class="text-xl font-extrabold text-gray-800 mt-1">482,900 DH</div>
+                    </div>
+                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm border-l-4 border-l-green-600">
+                        <div class="text-xs text-gray-500 font-semibold uppercase">Valeur Stock (CUMP)</div>
+                        <div id="kpi-val-stock" class="text-xl font-extrabold text-gray-800 mt-1">0.00 DH</div>
+                    </div>
+                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm border-l-4 border-l-orange-500 cursor-pointer" onclick="navigate('achats-chine')">
+                        <div class="text-xs text-gray-500 font-semibold uppercase">PO Import Chine Actifs</div>
+                        <div id="kpi-po-count" class="text-xl font-extrabold text-orange-600 mt-1">2 Dossiers</div>
+                    </div>
+                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm border-l-4 border-l-red-500 cursor-pointer" onclick="navigate('rupture')">
+                        <div class="text-xs text-gray-500 font-semibold uppercase">Alertes Rupture</div>
+                        <div id="kpi-rupture-count" class="text-xl font-extrabold text-red-600 mt-1">2 Références</div>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 shadow-sm rounded-sm max-w-4xl">
+                    <div class="bg-[#f8f9fa] border-b border-gray-200 px-4 py-3 font-semibold text-gray-700 flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-info text-gray-400 mr-2"></i> INFORMATIONS SITE</span>
+                        <span class="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">Synchro Temps Réel</span>
+                    </div>
+                    <table class="w-full text-left">
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600">Clients</td><td id="info-clients" class="py-3 px-4 text-right font-medium">121 948</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600">Rubriques</td><td class="py-3 px-4 text-right font-medium">131</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600">Produits</td><td id="info-prods" class="py-3 px-4 text-right font-medium">3 559</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600">Produits en ligne</td><td class="py-3 px-4 text-right font-medium">2 276</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600">Produits hors ligne</td><td class="py-3 px-4 text-right font-medium">1 283</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600">Commandes</td><td id="info-cmds" class="py-3 px-4 text-right font-medium">63 363</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600 text-orange-600 font-semibold">Commandes en instance</td><td class="py-3 px-4 text-right font-bold text-orange-600">28</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600 text-blue-600 font-semibold">Commandes en traitement</td><td class="py-3 px-4 text-right font-bold text-blue-600">16</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="py-3 px-4 text-gray-600 text-red-600 font-semibold">Commandes annulées</td><td class="py-3 px-4 text-right font-bold text-red-600">11 093</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- NOUVEAU : GESTION DES ACCÈS & UTILISATEURS -->
+            <section id="view-users" class="view-section">
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <div class="text-gray-500 text-xs mb-1">Sécurité / <span class="font-semibold text-gray-700">Gestion des Accès</span></div>
+                        <h2 class="text-2xl font-bold text-gray-800">Comptes Utilisateurs & Permissions ERP</h2>
+                    </div>
+                    <button onclick="document.getElementById('form-add-user').classList.toggle('hidden')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm text-sm font-semibold transition">
+                        <i class="fa-solid fa-user-plus mr-1"></i> Donner un accès (Nouvel Utilisateur)
+                    </button>
+                </div>
+
+                <div id="form-add-user" class="bg-white p-5 rounded border border-gray-200 shadow-sm mb-5 hidden">
+                    <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Créer un identifiant de connexion pour un collaborateur</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <input type="text" id="u-name" placeholder="Nom complet (Ex: Yassine B.)" class="border rounded px-3 py-2">
+                        <input type="email" id="u-email" placeholder="Email de connexion" class="border rounded px-3 py-2">
+                        <input type="text" id="u-pass" placeholder="Mot de passe" class="border rounded px-3 py-2">
+                        <select id="u-role" class="border rounded px-3 py-2 font-semibold">
+                            <option value="Responsable Achat">Responsable Achat</option>
+                            <option value="Magasinier WMS">Magasinier WMS</option>
+                            <option value="Manager Gueliz">Manager Gueliz</option>
+                            <option value="Invité / Recruteur">Invité / Recruteur</option>
+                        </select>
+                    </div>
+                    <div class="mt-3 flex justify-end">
+                        <button onclick="ajouterUser()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded font-bold">Activer ce compte</button>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 shadow-sm rounded-sm">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-100 text-gray-600 border-b border-gray-200">
+                            <tr><th class="py-3 px-4">Nom Utilisateur</th><th class="py-3 px-4">Email (Login)</th><th class="py-3 px-4">Mot de passe</th><th class="py-3 px-4">Rôle / Accès</th><th class="py-3 px-4 text-center">Action</th></tr>
+                        </thead>
+                        <tbody id="users-table-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 2. FOURNISSEURS -->
+            <section id="view-fournisseurs" class="view-section">
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <div class="text-gray-500 text-xs mb-1">Stock & Achat / <span class="font-semibold text-gray-700">Fournisseurs</span></div>
+                        <h2 class="text-2xl font-bold text-gray-800">Annuaire des Fournisseurs Internationaux & Locaux</h2>
+                    </div>
+                    <button onclick="document.getElementById('form-add-fourn').classList.toggle('hidden')" class="bg-gray-800 hover:bg-black text-white px-4 py-2 rounded shadow-sm text-sm font-semibold transition"><i class="fa-solid fa-plus mr-1"></i> Ajouter Fournisseur</button>
+                </div>
+
+                <div id="form-add-fourn" class="bg-white p-4 rounded border border-gray-200 shadow-sm mb-4 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <input type="text" id="f-nom" placeholder="Raison Sociale (Ex: Yiwu Trading)" class="border rounded px-3 py-1.5">
+                        <input type="text" id="f-contact" placeholder="Nom du Contact" class="border rounded px-3 py-1.5">
+                        <input type="text" id="f-tel" placeholder="Téléphone / WeChat" class="border rounded px-3 py-1.5">
+                        <select id="f-pays" class="border rounded px-3 py-1.5">
+                            <option value="🇨🇳 Chine (FOB)">🇨🇳 Chine (FOB)</option>
+                            <option value="🇨🇳 Chine (CIF)">🇨🇳 Chine (CIF)</option>
+                            <option value="🇲🇦 Maroc (Local)">🇲🇦 Maroc (Local)</option>
+                        </select>
+                    </div>
+                    <div class="mt-3 flex justify-end">
+                        <button onclick="ajouterFournisseur()" class="bg-green-600 text-white px-4 py-1.5 rounded font-bold">Enregistrer Fournisseur</button>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 shadow-sm rounded-sm">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-100 text-gray-600 border-b border-gray-200">
+                            <tr><th class="py-3 px-4">ID</th><th class="py-3 px-4">Raison Sociale</th><th class="py-3 px-4">Contact</th><th class="py-3 px-4">Téléphone</th><th class="py-3 px-4">Pays & Incoterm</th><th class="py-3 px-4 text-center">Action</th></tr>
+                        </thead>
+                        <tbody id="fourn-table-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 3. ÉTAT DES STOCKS -->
+            <section id="view-etat-stock" class="view-section">
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <div class="text-gray-500 text-xs mb-1">Stock & Achat / <span class="font-semibold text-gray-700">Etat des stocks</span></div>
+                        <h2 class="text-2xl font-bold text-gray-800">Inventaire Physique & Valorisation CUMP</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="navigate('entree-stock')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-xs font-bold"><i class="fa-solid fa-plus mr-1"></i> Entrée Stock</button>
+                        <button onclick="navigate('sortie-stock')" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded text-xs font-bold"><i class="fa-solid fa-minus mr-1"></i> Sortie Stock</button>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 shadow-sm rounded-sm">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-100 text-gray-600 border-b border-gray-200">
+                            <tr><th class="py-3 px-4">SKU</th><th class="py-3 px-4">Désignation</th><th class="py-3 px-4">Emplacement</th><th class="py-3 px-4">Qté Actuelle</th><th class="py-3 px-4">CUMP (DH)</th><th class="py-3 px-4">Valeur Totale</th><th class="py-3 px-4">Statut</th></tr>
+                        </thead>
+                        <tbody id="stock-table-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 4. ENTRÉE DE STOCK -->
+            <section id="view-entree-stock" class="view-section">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Réception de Marchandise & Recalcul CUMP</h2>
+                <div class="bg-white p-6 rounded border border-gray-200 shadow-sm max-w-2xl space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Sélectionner l'article reçu :</label>
+                        <select id="in-sku" class="w-full border rounded px-3 py-2 bg-gray-50 font-semibold"></select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Quantité reçue (Pcs) :</label>
+                            <input type="number" id="in-qte" value="50" min="1" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-blue-600 mb-1">Prix d'achat unitaire (DH) :</label>
+                            <input type="number" step="0.01" id="in-prix" value="85.00" class="w-full border rounded px-3 py-2">
+                        </div>
+                    </div>
+                    <button onclick="validerEntreeStock()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded shadow">Valider l'Entrée en Stock</button>
+                </div>
+            </section>
+
+            <!-- 5. SORTIE DE STOCK -->
+            <section id="view-sortie-stock" class="view-section">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Expédition / Sortie de Marchandise</h2>
+                <div class="bg-white p-6 rounded border border-gray-200 shadow-sm max-w-2xl space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Sélectionner l'article à sortir :</label>
+                        <select id="out-sku" class="w-full border rounded px-3 py-2 bg-gray-50 font-semibold"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Quantité à sortir :</label>
+                        <input type="number" id="out-qte" value="10" min="1" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <button onclick="validerSortieStock()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded shadow">Valider la Sortie du Stock</button>
+                </div>
+            </section>
+
+            <!-- 6. COMMANDES CLIENTS -->
+            <section id="view-commandes" class="view-section">
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Gestion des Ventes & Facturation (<span id="cmd-filter-label">Toutes</span>)</h2>
+                    </div>
+                    <button onclick="document.getElementById('form-add-cmd').classList.toggle('hidden')" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow-sm text-sm font-semibold"><i class="fa-solid fa-plus mr-1"></i> Créer Vente</button>
+                </div>
+
+                <div id="form-add-cmd" class="bg-white p-4 rounded border border-gray-200 shadow-sm mb-4 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <input type="text" id="c-client" placeholder="Nom du Client" class="border rounded px-3 py-1.5">
+                        <input type="text" id="c-ville" placeholder="Ville" class="border rounded px-3 py-1.5">
+                        <input type="number" id="c-montant" placeholder="Montant Total (DH)" class="border rounded px-3 py-1.5">
+                        <select id="c-statut" class="border rounded px-3 py-1.5">
+                            <option value="EN INSTANCE">EN INSTANCE</option>
+                            <option value="EN TRAITEMENT">EN TRAITEMENT</option>
+                            <option value="EXPÉDIÉE">EXPÉDIÉE</option>
+                        </select>
+                    </div>
+                    <div class="mt-3 flex justify-end">
+                        <button onclick="ajouterCommandeClient()" class="bg-green-600 text-white px-4 py-1.5 rounded font-bold">Valider Commande</button>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 shadow-sm rounded-sm">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-100 text-gray-600 border-b border-gray-200">
+                            <tr><th class="py-3 px-4">N° Commande</th><th class="py-3 px-4">Client</th><th class="py-3 px-4">Ville</th><th class="py-3 px-4">Montant Total</th><th class="py-3 px-4">Statut</th><th class="py-3 px-4 text-center">Facture PDF</th></tr>
+                        </thead>
+                        <tbody id="cmd-table-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 7. ACHATS IMPORT CHINE -->
+            <section id="view-achats-chine" class="view-section">
+                <div class="flex justify-between items-end mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Module d'Importation & Sourcing Chine 🇨🇳</h2>
+                    <button onclick="document.getElementById('form-add-po').classList.toggle('hidden')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm text-sm font-semibold"><i class="fa-solid fa-plus mr-1"></i> Nouveau PO</button>
+                </div>
+
+                <div id="form-add-po" class="bg-white p-5 rounded border border-gray-200 shadow-sm mb-6 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                        <select id="po-fourn" class="border rounded px-3 py-1.5"><option>Shenzhen Tech Co. (FOB)</option><option>Guangzhou Textiles (CIF)</option></select>
+                        <input type="text" id="po-prod" placeholder="Article (SKU)" class="border rounded px-3 py-1.5">
+                        <input type="number" id="po-qte" value="1000" class="border rounded px-3 py-1.5">
+                        <input type="number" step="0.01" id="po-prix" value="3.50" class="border rounded px-3 py-1.5">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 bg-gray-50 p-3 rounded border">
+                        <input type="date" id="po-ready" class="border rounded px-3 py-1.5">
+                        <input type="date" id="po-eta" class="border rounded px-3 py-1.5">
+                        <select id="po-statut" class="border rounded px-3 py-1.5"><option value="EN PRODUCTION">EN PRODUCTION</option><option value="EN MER (CONTAINER)">EN MER (CONTAINER)</option></select>
+                    </div>
+                    <div class="flex justify-end"><button onclick="ajouterCommande()" class="bg-green-600 text-white px-5 py-2 rounded font-bold">Enregistrer & Émettre PO</button></div>
+                </div>
+
+                <div class="bg-white border border-gray-200 shadow-sm rounded-sm">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-100 text-gray-600 border-b border-gray-200">
+                            <tr><th class="py-3 px-4">N° PO</th><th class="py-3 px-4">Fournisseur</th><th class="py-3 px-4">Article & Qté</th><th class="py-3 px-4">Total ($)</th><th class="py-3 px-4">Ready Date 🏭</th><th class="py-3 px-4">ETA Maroc 🚢</th><th class="py-3 px-4">Statut</th><th class="py-3 px-4 text-center">Actions PDF</th></tr>
+                        </thead>
+                        <tbody id="po-table-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 8. GÉNÉRATEUR DE CONTAINER -->
+            <section id="view-generateur-container" class="view-section">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Simulateur de Colisage & Remplissage Container (CBM)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-5 rounded border shadow-sm space-y-4">
+                        <select id="cbm-type" onchange="calculerCBM()" class="w-full border rounded px-3 py-2 font-bold">
+                            <option value="28">Container 20 Pieds Dry (28 m³)</option>
+                            <option value="58">Container 40 Pieds Dry (58 m³)</option>
+                            <option value="68" selected>Container 40 Pieds HQ (68 m³)</option>
+                        </select>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="number" id="cbm-cartons" value="420" oninput="calculerCBM()" class="border rounded px-3 py-2">
+                            <input type="number" step="0.01" id="cbm-unit" value="0.12" oninput="calculerCBM()" class="border rounded px-3 py-2">
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded border shadow-sm">
+                        <div class="text-4xl font-extrabold text-blue-600 mb-2" id="cbm-result-pct">74.1%</div>
+                        <p class="text-gray-600 text-sm" id="cbm-result-txt">Volume occupé : 50.40 m³ sur 68 m³</p>
+                        <div class="w-full bg-gray-200 h-5 rounded-full mt-4 overflow-hidden"><div id="cbm-bar" class="bg-blue-600 h-full" style="width: 74%"></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. RUPTURE STOCK PRÉVISIONNEL -->
+            <section id="view-rupture" class="view-section">
+                <h2 class="text-2xl font-bold text-red-600 mb-4"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Articles en Alerte Critique de Rupture</h2>
+                <div class="bg-white border border-red-200 shadow-sm rounded-sm">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-red-50 text-red-800 border-b border-red-200">
+                            <tr><th class="py-3 px-4">SKU</th><th class="py-3 px-4">Désignation</th><th class="py-3 px-4">Stock Actuel</th><th class="py-3 px-4">Seuil Critique</th><th class="py-3 px-4">Manquant</th><th class="py-3 px-4 text-center">Action</th></tr>
+                        </thead>
+                        <tbody id="rupture-table-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- AUTRES SECTIONS -->
+            <section id="view-achats-encours" class="view-section"><h2 class="text-2xl font-bold mb-4">Achats Locaux en Cours</h2><div class="bg-white p-4 border rounded">2 Commandes fournisseurs locaux en cours de livraison vers Sidi Ghanem.</div></section>
+            <section id="view-autres-achats" class="view-section"><h2 class="text-2xl font-bold mb-4">Consommables & Emballages</h2><div class="bg-white p-4 border rounded">Stock Palettes : 45 | Sachets Zip : 1 800 pcs.</div></section>
+            <section id="view-emplacements" class="view-section"><h2 class="text-2xl font-bold mb-4">WMS — Gestion des Emplacements</h2><div class="bg-white p-4 border rounded">Allée A (85%) | Allée B (30%) | Quai Expédition (Actif).</div></section>
+            <section id="view-etiquette" class="view-section"><h2 class="text-2xl font-bold mb-4">Étiquettes Code-Barres</h2><div class="bg-white p-6 border rounded max-w-md text-center"><div class="font-mono text-2xl tracking-[6px] my-3">|||| |||| |||||</div><button onclick="window.print()" class="bg-black text-white px-4 py-2 rounded font-bold">Imprimer</button></div></section>
+            <section id="view-messagerie" class="view-section"><h2 class="text-2xl font-bold mb-4">Messagerie Interne</h2><div class="bg-white p-4 border rounded">3 messages reçus (Shenzhen Tech, Transitaire Casa).</div></section>
+            <section id="view-sav" class="view-section"><h2 class="text-2xl font-bold mb-4">Tickets SAV</h2><div class="bg-white p-4 border rounded">Ticket #SAV-402 : Échange taille L en cours.</div></section>
+            <section id="view-clients" class="view-section"><h2 class="text-2xl font-bold mb-4">Clients B2B & B2C</h2><div class="bg-white p-4 border rounded">Hôtel La Mamounia (VIP) | Concept Store Gueliz.</div></section>
+            <section id="view-catalogue" class="view-section"><h2 class="text-2xl font-bold mb-4">Catalogue Produits</h2><div class="bg-white p-4 border rounded">Comfort Colors 1717 (249 DH) | Gildan 64000 (199 DH).</div></section>
+            <section id="view-marketing" class="view-section"><h2 class="text-2xl font-bold mb-4">Codes Promos</h2><div class="bg-white p-4 border rounded">Code actif : MARRAKECH20 (-20%).</div></section>
+
+        </div>
+    </main>
+
+    <!-- ================= JAVASCRIPT ENGINE ================= -->
+    <script>
+        // 1. GESTION DES UTILISATEURS & AUTHENTIFICATION (LOGIN)
+        let usersList = JSON.parse(localStorage.getItem('erp_users')) || [
+            { name: "Noureddine Boukestane", email: "nour@apparelory.com", pass: "admin2026", role: "Super Admin" },
+            { name: "Service Achats", email: "achat@apparelory.com", pass: "achat123", role: "Responsable Achat" }
+        ];
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const em = document.getElementById('login-email').value.trim().toLowerCase();
+            const pw = document.getElementById('login-pass').value.trim();
+            const found = usersList.find(u => u.email.toLowerCase() === em && u.pass === pw);
+
+            if(found) {
+                sessionStorage.setItem('erp_logged_user', JSON.stringify(found));
+                appliquerSession(found);
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function appliquerSession(user) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('top-user-name').innerText = user.name;
+            document.getElementById('top-user-role').innerText = user.role;
+        }
+
+        function logout() {
+            sessionStorage.removeItem('erp_logged_user');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        function renderUsers() {
+            const tbody = document.getElementById('users-table-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            usersList.forEach((u, idx) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-bold text-gray-800">${u.name}</td>
+                        <td class="py-3 px-4 font-mono text-blue-600">${u.email}</td>
+                        <td class="py-3 px-4 font-mono text-gray-500">${u.pass}</td>
+                        <td class="py-3 px-4"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">${u.role}</span></td>
+                        <td class="py-3 px-4 text-center">${idx === 0 ? '<span class="text-xs text-gray-400">Propriétaire</span>' : `<button onclick="supprimerUser(${idx})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>`}</td>
+                    </tr>`;
+            });
+        }
+
+        function ajouterUser() {
+            const name = document.getElementById('u-name').value;
+            const email = document.getElementById('u-email').value.trim();
+            const pass = document.getElementById('u-pass').value.trim();
+            const role = document.getElementById('u-role').value;
+            if(!name || !email || !pass) return alert("Veuillez remplir tous les champs !");
+            usersList.push({ name, email, pass, role });
+            localStorage.setItem('erp_users', JSON.stringify(usersList));
+            document.getElementById('form-add-user').classList.add('hidden');
+            renderUsers();
+            alert(`✅ Accès créé ! ${name} peut maintenant se connecter avec ${email} / ${pass}`);
+        }
+
+        function supprimerUser(idx) {
+            usersList.splice(idx, 1);
+            localStorage.setItem('erp_users', JSON.stringify(usersList));
+            renderUsers();
+        }
+
+        // 2. NAVIGATION & SOUS-MENUS
+        function toggleMenu(submenuId) {
+            document.getElementById(submenuId).classList.toggle('open');
+        }
+
+        function navigate(viewId, element) {
+            document.querySelectorAll('.nav-item, .sub-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            const targetView = document.getElementById(`view-${viewId}`);
+            if(targetView) targetView.classList.add('active');
+            renderAll();
+        }
+
+        const branchStats = {
+            "Siège Sidi Ghanem": { ca: "482,900 DH", clients: "121 948", prods: "3 559", cmds: "63 363" },
+            "Showroom Gueliz": { ca: "195,400 DH", clients: "42 110", prods: "1 240", cmds: "18 920" },
+            "Dépôt Casablanca": { ca: "810,200 DH", clients: "215 400", prods: "5 120", cmds: "94 110" }
+        };
+
+        function changerBranche(nomBranche) {
+            document.getElementById('current-branch-label').innerText = nomBranche;
+            const s = branchStats[nomBranche];
+            if(s) {
+                document.getElementById('kpi-ca').innerText = s.ca;
+                document.getElementById('info-clients').innerText = s.clients;
+                document.getElementById('info-prods').innerText = s.prods;
+                document.getElementById('info-cmds').innerText = s.cmds;
+            }
+        }
+
+        // 3. DONNÉES MÉTIER
+        let stockArticles = JSON.parse(localStorage.getItem('erp_stock')) || [
+            { sku: "APP-1717-PEP", des: "T-Shirt Comfort Colors 1717 (Pepper)", emp: "Allée A-01", qte: 140, cump: 65.00, seuil: 30 },
+            { sku: "APP-1717-SAG", des: "T-Shirt Comfort Colors 1717 (Sage)", emp: "Allée A-02", qte: 12, cump: 65.00, seuil: 25 },
+            { sku: "GIL-64000-IVO", des: "T-Shirt Gildan 64000 (Ivory)", emp: "Allée B-01", qte: 210, cump: 42.00, seuil: 40 },
+            { sku: "PCK-ZIP-BLK", des: "Packaging Zip Mat Apparelory", emp: "Allée C-04", qte: 18, cump: 2.50, seuil: 50 }
+        ];
+
+        let fournisseursList = JSON.parse(localStorage.getItem('erp_fourn')) || [
+            { id: 1, nom: "Shenzhen Tech & Apparel Co.", contact: "Mr. Wang", tel: "+86 138 0013 8000", pays: "🇨🇳 Chine (FOB)" },
+            { id: 2, nom: "Guangzhou Textiles Group", contact: "Ms. Chen", tel: "+86 139 2211 4455", pays: "🇨🇳 Chine (CIF)" },
+            { id: 3, nom: "Salipro S.A", contact: "Hassan Berrada", tel: "0524 33 22 11", pays: "🇲🇦 Maroc (Local)" }
+        ];
+
+        let commandesClients = JSON.parse(localStorage.getItem('erp_cmds')) || [
+            { num: "CMD-2026-991", client: "Hôtel La Mamounia", ville: "Marrakech", montant: 12500.00, statut: "EXPÉDIÉE" },
+            { num: "CMD-2026-992", client: "Concept Store Gueliz", ville: "Marrakech", montant: 4800.00, statut: "EN INSTANCE" }
+        ];
+
+        let commandesImport = JSON.parse(localStorage.getItem('apparelory_po')) || [
+            { po: "PO-2610-001", fourn: "Shenzhen Tech Co. (FOB)", prod: "T-Shirt Comfort 1717", qte: 1000, prix: 3.50, ready: "2026-11-10", eta: "2026-12-15", statut: "EN PRODUCTION" },
+            { po: "PO-2610-002", fourn: "Guangzhou Textiles (CIF)", prod: "Gildan 64000", qte: 2000, prix: 2.40, ready: "2026-10-25", eta: "2026-11-28", statut: "EN MER (CONTAINER)" }
+        ];
+
+        let currentOrderFilter = 'ALL';
+
+        function renderAll() {
+            renderUsers();
+            renderStock();
+            renderFournisseurs();
+            renderCommandes();
+            renderPOTable();
+            calculerCBM();
+        }
+
+        function renderStock() {
+            const tbody = document.getElementById('stock-table-body');
+            const rupBody = document.getElementById('rupture-table-body');
+            const selIn = document.getElementById('in-sku');
+            const selOut = document.getElementById('out-sku');
+            tbody.innerHTML = ''; rupBody.innerHTML = ''; selIn.innerHTML = ''; selOut.innerHTML = '';
+            let valeurTotaleStock = 0, nbRuptures = 0;
+
+            stockArticles.forEach(art => {
+                const val = art.qte * art.cump;
+                valeurTotaleStock += val;
+                const isCritique = art.qte <= art.seuil;
+                if(isCritique) nbRuptures++;
+
+                tbody.innerHTML += `
+                    <tr class="${isCritique ? 'bg-red-50' : 'hover:bg-gray-50'}">
+                        <td class="py-3 px-4 font-mono font-bold text-blue-600">${art.sku}</td>
+                        <td class="py-3 px-4 font-bold">${art.des}</td>
+                        <td class="py-3 px-4 text-gray-500">${art.emp}</td>
+                        <td class="py-3 px-4 font-extrabold ${isCritique ? 'text-red-600' : 'text-gray-800'}">${art.qte} pcs</td>
+                        <td class="py-3 px-4 font-semibold">${art.cump.toFixed(2)} DH</td>
+                        <td class="py-3 px-4 font-bold text-green-700">${val.toFixed(2)} DH</td>
+                        <td class="py-3 px-4">${isCritique ? '<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">SOUS LE SEUIL</span>' : '<span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs font-bold">OPTIMAL</span>'}</td>
+                    </tr>`;
+
+                if(isCritique) {
+                    rupBody.innerHTML += `
+                        <tr>
+                            <td class="py-3 px-4 font-mono font-bold">${art.sku}</td>
+                            <td class="py-3 px-4 font-bold">${art.des}</td>
+                            <td class="py-3 px-4 font-extrabold text-red-600">${art.qte} pcs</td>
+                            <td class="py-3 px-4">${art.seuil} pcs</td>
+                            <td class="py-3 px-4 font-bold text-orange-600">${art.seuil - art.qte + 50} pcs rec.</td>
+                            <td class="py-3 px-4 text-center"><button onclick="navigate('achats-chine')" class="bg-red-600 text-white px-3 py-1 rounded text-xs font-bold">Commander</button></td>
+                        </tr>`;
+                }
+                const opt = `<option value="${art.sku}">${art.sku} — ${art.des} (Stock: ${art.qte})</option>`;
+                selIn.innerHTML += opt; selOut.innerHTML += opt;
+            });
+
+            document.getElementById('kpi-val-stock').innerText = valeurTotaleStock.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + " DH";
+            document.getElementById('kpi-rupture-count').innerText = nbRuptures + " Références";
+            document.getElementById('notif-badge').innerText = nbRuptures;
+        }
+
+        function validerEntreeStock() {
+            const sku = document.getElementById('in-sku').value;
+            const qteEntree = parseInt(document.getElementById('in-qte').value) || 0;
+            const prixLot = parseFloat(document.getElementById('in-prix').value) || 0;
+            const art = stockArticles.find(a => a.sku === sku);
+            if(!art || qteEntree <= 0) return;
+            const nouvQte = art.qte + qteEntree;
+            art.cump = ((art.qte * art.cump) + (qteEntree * prixLot)) / nouvQte;
+            art.qte = nouvQte;
+            localStorage.setItem('erp_stock', JSON.stringify(stockArticles));
+            navigate('etat-stock');
+        }
+
+        function validerSortieStock() {
+            const sku = document.getElementById('out-sku').value;
+            const qteSortie = parseInt(document.getElementById('out-qte').value) || 0;
+            const art = stockArticles.find(a => a.sku === sku);
+            if(!art || qteSortie <= 0 || qteSortie > art.qte) return alert("Quantité invalide !");
+            art.qte -= qteSortie;
+            localStorage.setItem('erp_stock', JSON.stringify(stockArticles));
+            navigate('etat-stock');
+        }
+
+        function renderFournisseurs() {
+            const tbody = document.getElementById('fourn-table-body');
+            tbody.innerHTML = '';
+            fournisseursList.forEach((f, idx) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-mono">#F0${f.id}</td>
+                        <td class="py-3 px-4 font-bold text-blue-600">${f.nom}</td>
+                        <td class="py-3 px-4">${f.contact}</td>
+                        <td class="py-3 px-4">${f.tel}</td>
+                        <td class="py-3 px-4 font-semibold">${f.pays}</td>
+                        <td class="py-3 px-4 text-center"><button onclick="supprimerFourn(${idx})" class="text-gray-400 hover:text-red-600"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>`;
+            });
+        }
+
+        function ajouterFournisseur() {
+            const nom = document.getElementById('f-nom').value;
+            if(!nom) return;
+            fournisseursList.push({ id: fournisseursList.length + 1, nom, contact: document.getElementById('f-contact').value, tel: document.getElementById('f-tel').value, pays: document.getElementById('f-pays').value });
+            localStorage.setItem('erp_fourn', JSON.stringify(fournisseursList));
+            document.getElementById('form-add-fourn').classList.add('hidden');
+            renderFournisseurs();
+        }
+
+        function supprimerFourn(idx) {
+            fournisseursList.splice(idx, 1);
+            localStorage.setItem('erp_fourn', JSON.stringify(fournisseursList));
+            renderFournisseurs();
+        }
+
+        function filterOrders(statut, elem) {
+            currentOrderFilter = statut;
+            document.getElementById('cmd-filter-label').innerText = statut === 'ALL' ? 'Toutes' : statut;
+            navigate('commandes', elem);
+        }
+
+        function renderCommandes() {
+            const tbody = document.getElementById('cmd-table-body');
+            tbody.innerHTML = '';
+            commandesClients.forEach((c, idx) => {
+                if(currentOrderFilter !== 'ALL' && c.statut !== currentOrderFilter) return;
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-bold text-blue-600">${c.num}</td>
+                        <td class="py-3 px-4 font-semibold">${c.client}</td>
+                        <td class="py-3 px-4 text-gray-500">${c.ville}</td>
+                        <td class="py-3 px-4 font-bold text-green-700">${c.montant.toFixed(2)} DH</td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 text-[10px] font-bold rounded bg-gray-100">${c.statut}</span></td>
+                        <td class="py-3 px-4 text-center"><button onclick="genererFacturePDF(${idx})" class="text-red-500"><i class="fa-solid fa-file-pdf text-xl"></i></button></td>
+                    </tr>`;
+            });
+        }
+
+        function ajouterCommandeClient() {
+            const cli = document.getElementById('c-client').value;
+            if(!cli) return;
+            commandesClients.unshift({ num: `CMD-2026-${994 + commandesClients.length}`, client: cli, ville: document.getElementById('c-ville').value || 'Marrakech', montant: parseFloat(document.getElementById('c-montant').value) || 0, statut: document.getElementById('c-statut').value });
+            localStorage.setItem('erp_cmds', JSON.stringify(commandesClients));
+            document.getElementById('form-add-cmd').classList.add('hidden');
+            renderCommandes();
+        }
+
+        function genererFacturePDF(idx) {
+            const c = commandesClients[idx];
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(20); doc.text("APPARELORY MAROC - FACTURE CLIENT", 14, 20);
+            doc.setFontSize(11); doc.text(`Facture N° : ${c.num} | Client : ${c.client} (${c.ville})`, 14, 32);
+            doc.autoTable({ startY: 42, head: [['Désignation', 'Statut', 'Total TTC (MAD)']], body: [['Commande Apparelory', c.statut, `${c.montant.toFixed(2)} DH`]] });
+            doc.save(`Facture_${c.num}.pdf`);
+        }
+
+        function renderPOTable() {
+            const tbody = document.getElementById('po-table-body');
+            tbody.innerHTML = '';
+            commandesImport.forEach((cmd, index) => {
+                const total = (cmd.qte * cmd.prix).toFixed(2);
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-bold text-blue-600">${cmd.po}</td>
+                        <td class="py-3 px-4">${cmd.fourn}</td>
+                        <td class="py-3 px-4"><span class="font-bold">${cmd.qte} pcs</span> — ${cmd.prod}</td>
+                        <td class="py-3 px-4 font-bold text-green-700">$${total}</td>
+                        <td class="py-3 px-4 font-semibold text-orange-600">${cmd.ready}</td>
+                        <td class="py-3 px-4 font-semibold text-blue-600">${cmd.eta}</td>
+                        <td class="py-3 px-4"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-bold">${cmd.statut}</span></td>
+                        <td class="py-3 px-4 text-center">
+                            <button onclick="genererPDF(${index})" class="text-red-500 mx-1"><i class="fa-solid fa-file-pdf text-xl"></i></button>
+                            <button onclick="supprimerCommande(${index})" class="text-gray-400 mx-1"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+            });
+            document.getElementById('kpi-po-count').innerText = commandesImport.length + " Dossiers";
+        }
+
+        function ajouterCommande() {
+            const prod = document.getElementById('po-prod').value;
+            if(!prod) return;
+            commandesImport.unshift({ po: `PO-2610-00${commandesImport.length + 1}`, fourn: document.getElementById('po-fourn').value, prod, qte: parseInt(document.getElementById('po-qte').value), prix: parseFloat(document.getElementById('po-prix').value), ready: document.getElementById('po-ready').value, eta: document.getElementById('po-eta').value, statut: document.getElementById('po-statut').value });
+            localStorage.setItem('apparelory_po', JSON.stringify(commandesImport));
+            document.getElementById('form-add-po').classList.add('hidden');
+            renderPOTable();
+        }
+
+        function supprimerCommande(index) {
+            commandesImport.splice(index, 1);
+            localStorage.setItem('apparelory_po', JSON.stringify(commandesImport));
+            renderPOTable();
+        }
+
+        function genererPDF(index) {
+            const cmd = commandesImport[index];
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(22); doc.text("APPARELORY ERP", 14, 20);
+            doc.setFontSize(16); doc.text("OFFICIAL PURCHASE ORDER (IMPORT CHINA)", 14, 36);
+            doc.setFontSize(11); doc.text(`PO : ${cmd.po} | Supplier : ${cmd.fourn} | Ready : ${cmd.ready}`, 14, 46);
+            doc.autoTable({ startY: 55, head: [['Product', 'Quantity', 'Unit Price ($)', 'Total ($)']], body: [[cmd.prod, `${cmd.qte} pcs`, `$${cmd.prix.toFixed(2)}`, `$${(cmd.qte * cmd.prix).toFixed(2)}`]] });
+            doc.save(`${cmd.po}_Apparelory.pdf`);
+        }
+
+        function calculerCBM() {
+            const maxCap = parseFloat(document.getElementById('cbm-type').value);
+            const volTotal = (parseInt(document.getElementById('cbm-cartons').value) || 0) * (parseFloat(document.getElementById('cbm-unit').value) || 0);
+            const pct = Math.min(100, (volTotal / maxCap) * 100);
+            document.getElementById('cbm-result-pct').innerText = pct.toFixed(1) + "%";
+            document.getElementById('cbm-result-txt').innerText = `Volume occupé : ${volTotal.toFixed(2)} m³ sur ${maxCap} m³`;
+            document.getElementById('cbm-bar').style.width = pct + "%";
+        }
+
+        window.onload = () => { 
+            const savedUser = sessionStorage.getItem('erp_logged_user');
+            if(savedUser) appliquerSession(JSON.parse(savedUser));
+            document.getElementById('po-ready').valueAsDate = new Date(Date.now() + 15*86400000);
+            document.getElementById('po-eta').valueAsDate = new Date(Date.now() + 45*86400000);
+            renderAll(); 
+        };
+    </script>
+</body>
+</html>
